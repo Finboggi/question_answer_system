@@ -1,6 +1,6 @@
-h1 #{@question.title}
+h1 = @question.title
 
-.question_body #{@question.body}
+.question_body = @question.body
 
 hr
 h2 Ответы
@@ -13,6 +13,5 @@ h2 Ответы
   | Пока никто не ответил на этот вопрос
 
 
-= link_to :controller => "answers", :action => "new", :question_id => @question.id do
-  span Ответить
+a href=new_question_answer_path(@question)  Ответить
 
