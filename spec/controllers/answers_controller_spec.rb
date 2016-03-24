@@ -16,19 +16,14 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid answer' do
-      it 'adds answer to database' do
+      it 'adds answer to database and assigns it to question' do
         expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
-          .to change(Answer, :count).by(1)
+          .to change(question.answers, :count).by(1)
       end
 
       it 'redirects to question' do
         post :create, question_id: question.id, answer: attributes_for(:answer)
         expect(response).to redirect_to question_path(question)
-      end
-
-      it 'assigned with question' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
-        expect(assigns(:answer).question).to eq question
       end
     end
 

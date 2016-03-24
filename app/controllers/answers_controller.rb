@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   before_action :find_question
 
   def new
-    @answer = @question.answers.new()
+    @answer = @question.answers.new
   end
 
   def create
