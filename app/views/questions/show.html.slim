@@ -1,0 +1,17 @@
+h1 = @question.title
+
+.question_body = @question.body
+
+hr
+h2 Ответы
+- if @answers.size
+
+  - @answers.each do |a|
+    .answer = a.body
+    hr
+- else
+  | Пока никто не ответил на этот вопрос
+
+
+a href=new_question_answer_path(@question)  Ответить
+
