@@ -6,17 +6,17 @@ feature 'User sign in', %q{
   I want to be order to sign in
 } do
 
-  given(:user) { create(:user) }
+
 
   scenario 'Registered user tries to sign in' do
-    sign_in(user)
+    sign_in(create(:user))
 
     expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path
   end
 
   scenario 'Not registered users tries to sign in' do
-    sign_in(user)
+    sign_in(User.new(email: 'new_email@test.com', password: '12345678'))
 
     expect(page).to have_content 'Invalid email or password'
     expect(current_path).to eq new_user_session_path
