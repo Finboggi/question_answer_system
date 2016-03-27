@@ -6,7 +6,7 @@ br
 - if @questions.size
 
   - @questions.each do |q|
-    .question = q.title
+    = link_to(q.title, q)
     hr
 - else
   = t('no_questions_asked')
