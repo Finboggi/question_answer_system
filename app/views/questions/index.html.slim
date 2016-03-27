@@ -1,0 +1,14 @@
+h1 Questions index
+
+p= link_to(t('ask_question_link'), new_question_path)
+
+br
+- if @questions.size
+
+  - @questions.each do |q|
+    .question = q.title
+    hr
+- else
+  = t('no_questions_asked')
+
+

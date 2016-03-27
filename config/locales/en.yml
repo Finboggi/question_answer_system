@@ -21,3 +21,12 @@
 
 en:
   hello: "Hello world"
+  ask_question_link: 'Ask question'
+  no_questions_asked: 'No one asked a question yet'
+  send_question_button: 'Ask'
+  no_answers: 'No one answered this question yet'
+  send_answer_link: 'Give answer'
+  send_answer_button: 'Give answer'
+  answer: 'Answer'
+  new_answer_header: 'Give new answer'
+  question_created: 'Your question successfully created'

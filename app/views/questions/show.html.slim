@@ -3,15 +3,13 @@ h1 = @question.title
 .question_body = @question.body
 
 hr
-h2 Ответы
+h2 =t('answers')
 - if @answers.size
 
   - @answers.each do |a|
     .answer = a.body
     hr
 - else
-  | Пока никто не ответил на этот вопрос
+  = t('no_answers')
 
-
-a href=new_question_answer_path(@question)  Ответить
-
+= link_to(t('send_answer_link'), new_question_answer_path(@question))

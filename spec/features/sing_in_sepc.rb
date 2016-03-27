@@ -5,24 +5,18 @@ feature 'User sign in', %q{
   As an user
   I want to be order to sign in
 } do
+
+  given(:user) { create(:user) }
+
   scenario 'Registered user tries to sign in' do
-    User.create!(email: 'user@test.ru', password: '12345678')
-
-    visit new_user_session_path
-    fill_in 'Email', with: 'user@test.ru'
-    fill_in 'Password', with: '12345678'
-
-    click_on 'Log in'
+    sign_in(user)
 
     expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path
   end
 
   scenario 'Not registered users tries to sign in' do
-    visit new_user_session_path
-    fill_in 'Email', with: 'wrong@test.ru'
-    fill_in 'Password', with: '12345678'
-    click_on 'Log in'
+    sign_in(user)
 
     expect(page).to have_content 'Invalid email or password'
     expect(current_path).to eq new_user_session_path

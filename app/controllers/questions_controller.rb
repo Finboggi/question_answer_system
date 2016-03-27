@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create]
   def new
     @question = Question.new
   end
@@ -11,6 +12,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
+      flash[:notice] = I18n.t 'question_created'
       redirect_to @question
     else
       render :new
