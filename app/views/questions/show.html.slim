@@ -2,6 +2,11 @@ h1 = @question.title
 
 .question_body = @question.body
 
+= @question.user_id
+= current_user.id
+
+- if @question.user_id == current_user.id
+  = link_to t('questions.delete.link'),  question_path(@question), method: :delete
 hr
 h2 =t('answers')
 - if @answers.size

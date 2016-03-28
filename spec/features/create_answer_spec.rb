@@ -7,11 +7,10 @@ feature 'give answer', %q{
 } do
 
   given(:user) { create(:user) }
+  given(:question) { create(:question) }
 
   scenario 'authenticated user give answer' do
     sign_in(user)
-
-    question = create(:question)
     answer = create(:answer)
 
     visit new_question_answer_path(question)
@@ -25,8 +24,6 @@ feature 'give answer', %q{
   end
 
   scenario 'non-authenticated user sends answer' do
-    question = create(:question)
-
     visit new_question_answer_path(question)
     expect(page).to have_content I18n.t 'devise.failure.unauthenticated'
   end

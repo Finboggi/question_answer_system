@@ -30,3 +30,8 @@ en:
   answer: 'Answer'
   new_answer_header: 'Give new answer'
   question_created: 'Your question successfully created'
+  questions:
+    delete:
+      link: 'Delete question'
+      success: 'Your question was deleted'
+      not_owner: 'You are not the owner of the question'

@@ -6,10 +6,8 @@ feature 'create question', %q{
   I want to be able to ask question
 } do
 
-  given(:user) { create(:user) }
-
   scenario 'authenticated user creates question' do
-    sign_in(user)
+    sign_in(create(:user))
 
     visit questions_path
     click_on I18n.t 'ask_question_link'
