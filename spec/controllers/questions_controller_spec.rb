@@ -71,6 +71,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
     sign_in_user
     let!(:question) {create(:question, user: @user) }
+    let!(:question_not_owned) {create(:question) }
 
     context 'question is deleted by owner' do
       it 'deletes question' do
@@ -84,7 +85,15 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
     context 'question is deleted by not owner' do
+      it 'deletes question' do
+        expect { delete :destroy, id: question_not_owned }
+          .to change(Question, :count).by(0)
+      end
 
+      it 'renders :show view' do
+        delete :destroy, id: question_not_owned
+        expect(response).to redirect_to question_path(question_not_owned)
+      end
     end
   end
 end
