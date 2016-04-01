@@ -1,6 +1,6 @@
 h1 Questions index
 
-p= link_to(t('ask_question_link'), new_question_path)
+p= link_to(t('questions.new.link'), new_question_path)
 
 br
 - if @questions.size
@@ -9,6 +9,6 @@ br
     = link_to(q.title, q)
     hr
 - else
-  = t('no_questions_asked')
+  = t('questions.none')
 
 

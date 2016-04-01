@@ -6,11 +6,11 @@ feature 'delete question', %q(
   I want to be able to delete question
 ) do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user_id: user.id) }
+  given(:question) { create(:question) }
 
   scenario 'Authenticated user tries to delete question he created' do
-    sign_in(user)
-    visit question_path(create(:question, user_id: user.id))
+    login_as(question.user)
+    visit question_path(question)
     click_on I18n.t 'questions.delete.link'
 
     expect(current_path).to eq root_path
@@ -18,7 +18,7 @@ feature 'delete question', %q(
   end
 
   scenario 'Authenticated user tries to delete question of another user' do
-    sign_in(create(:user))
+    login_as(user)
     visit question_path(question)
 
     expect(page).to_not have_link(I18n.t('questions.delete.link'), href: question_path(question))

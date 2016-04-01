@@ -15,11 +15,11 @@ feature 'give answer', %q(
     visit new_question_answer_path(question)
 
     fill_in 'Body', with: answer.body
-    click_on 'Give answer'
+    click_on I18n.t 'answers.new.link'
 
     expect(current_path).to eq question_path(question)
     expect(page).to have_content answer.body
-    expect(page).to have_content 'Answer successfully created'
+    expect(page).to have_content I18n.t 'answers.new.success'
   end
 
   scenario 'non-authenticated user sends answer' do

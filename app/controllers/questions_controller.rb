@@ -14,7 +14,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
-      flash[:notice] = I18n.t 'question_created'
+      flash[:notice] = I18n.t 'questions.new.success'
       redirect_to @question
     else
       render :new

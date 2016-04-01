@@ -8,7 +8,7 @@ feature 'User sign in', %q(
   scenario 'Registered user tries to sign in' do
     sign_in(create(:user))
 
-    expect(page).to have_content 'Signed in successfully.'
+    expect(page).to have_content I18n.t 'devise.sessions.signed_in'
     expect(current_path).to eq root_path
   end
 

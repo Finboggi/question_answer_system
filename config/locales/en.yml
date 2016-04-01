@@ -21,23 +21,32 @@
 
 en:
   hello: "Hello world"
-  ask_question_link: 'Ask question'
-  no_questions_asked: 'No one asked a question yet'
-  send_question_button: 'Ask'
-  no_answers: 'No one answered this question yet'
-  send_answer_link: 'Give answer'
-  send_answer_button: 'Give answer'
-  answer: 'Answer'
   new_answer_header: 'Give new answer'
-  question_created: 'Your question successfully created'
   questions:
+    name: 'Question'
+    plural: 'Questions'
+    none: 'No one asked a question yet'
+    new:
+      link: 'Ask question'
+      button: 'Ask'
+      success: 'Your question successfully created'
     delete:
       link: 'Delete question'
       success: 'Your question was deleted'
       not_owner: 'You are not the owner of the question'
   answers:
-    subheader: 'Answers'
+    name: 'Answer'
+    plural: 'Answers'
+    none: 'No one answered this question yet'
+    new:
+      link: 'Give answer'
+      button: 'Give answer'
+      success: 'Answer successfully created'
     delete:
       link: 'Delete answer'
       success: 'Your answer was deleted'
       not_owner: 'You are not the owner of the answer'
+  users:
+    sign_in: 'Sign in'
+    sign_up: 'Sign up'
+    sign_out: 'Sign out'

@@ -9,9 +9,9 @@ feature 'User sign out', %q(
 
   scenario 'Authorised user tries to sign out' do
     sign_in(user)
-    click_on 'Sign out'
+    click_on I18n.t 'users.sign_out'
 
-    expect(page).to have_content 'Signed out successfully.'
+    expect(page).to have_content I18n.t 'devise.sessions.signed_out'
     expect(current_path).to eq root_path
   end
 end

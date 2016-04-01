@@ -15,7 +15,7 @@ feature 'User sign out', %q(
   scenario 'Non-existing user tries to register' do
     register(User.new(email: 'new_email@test.com', password: '12345678'))
 
-    expect(page).to have_content 'You have signed up successfully.'
+    expect(page).to have_content I18n.t 'devise.registrations.signed_up'
     expect(current_path).to eq root_path
   end
 end
