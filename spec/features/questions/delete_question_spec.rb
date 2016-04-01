@@ -15,6 +15,7 @@ feature 'delete question', %q(
 
     expect(current_path).to eq root_path
     expect(page).to have_content I18n.t 'questions.delete.success'
+    expect(page).to_not have_content question.title
   end
 
   scenario 'Authenticated user tries to delete question of another user' do

@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = Question.new(question_params.merge(user: current_user))
 
     if @question.save
       flash[:notice] = I18n.t 'questions.new.success'
@@ -23,10 +23,11 @@ class QuestionsController < ApplicationController
 
   def show
     @answers = @question.answers
+    @answer = Answer.new question: @question
   end
 
   def destroy
-    if !current_user.nil? && @question.user_id == current_user.id
+    if current_user.author_of?(@question)
       flash[:notice] = I18n.t('questions.delete.success')
       @question.destroy!
       redirect_to root_path
@@ -39,7 +40,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, :user_id).merge(user: current_user)
+    params.require(:question).permit(:title, :body)
   end
 
   def find_question

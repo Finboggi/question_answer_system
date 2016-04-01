@@ -12,10 +12,10 @@ feature 'give answer', %q(
     sign_in(user)
     answer = create(:answer)
 
-    visit new_question_answer_path(question)
+    visit question_path(question)
 
     fill_in 'Body', with: answer.body
-    click_on I18n.t 'answers.new.link'
+    click_on I18n.t 'answers.new.button'
 
     expect(current_path).to eq question_path(question)
     expect(page).to have_content answer.body

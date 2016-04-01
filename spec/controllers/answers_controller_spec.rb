@@ -27,6 +27,11 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question.id, answer: attributes_for(:answer)
         expect(response).to redirect_to question_path(question)
       end
+
+      it 'user authors new answer' do
+        post :create, question_id: question.id, answer: attributes_for(:answer)
+        expect(assigns(:answer).user_id).to eq @user.id
+      end
     end
 
     context 'with invalid answer' do
@@ -62,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'question is deleted by not owner' do
       it 'deletes question' do
         expect { delete :destroy, id: answer_not_owned, question_id: answer_not_owned.question }
-          .to change(Answer, :count).by(0)
+          .to_not change(Answer, :count)
       end
 
       it 'renders :show view' do

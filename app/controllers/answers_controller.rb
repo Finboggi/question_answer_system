@@ -8,7 +8,7 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = @question.answers.new(answer_params.merge(user: current_user))
     if @answer.save
       flash[:notice] = I18n.t('answers.new.success')
       redirect_to @question
@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if !current_user.nil? && @answer.user_id == current_user.id
+    if current_user.author_of?(@answer)
       flash[:notice] = I18n.t('answers.delete.success')
       @answer.destroy!
     else
@@ -38,6 +38,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body).merge(user: current_user)
+    params.require(:answer).permit(:body)
   end
 end

@@ -2,18 +2,18 @@ h1 = @question.title
 
 .question_body = @question.body
 
-- if !current_user.nil? && @question.user_id == current_user.id
+- if current_user && current_user.author_of?(@question)
   = link_to t('questions.delete.link'),  question_path(@question), method: :delete
 hr
-h2 =t('answers.plural')
-- if @answers.size
 
+h2 =t('answers.plural')
+- if @answers.present?
   - @answers.each do |a|
     .answer = a.body
-    - if !current_user.nil? && a.user_id == current_user.id
+    - if current_user && current_user.author_of?(a)
       = link_to t('answers.delete.link'), question_answer_path(@question, a), method: :delete
     hr
 - else
   = t('answers.none')
 
-= link_to(t('answers.new.link'), new_question_answer_path(@question))
+= render 'form_answer'
