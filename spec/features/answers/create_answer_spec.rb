@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'give answer', %q{
+feature 'give answer', %q(
   In order to help other users
   as an authorised user
   I want to give answer to the existing question
-} do
-
+) do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
@@ -27,6 +26,4 @@ feature 'give answer', %q{
     visit new_question_answer_path(question)
     expect(page).to have_content I18n.t 'devise.failure.unauthenticated'
   end
-
 end
-

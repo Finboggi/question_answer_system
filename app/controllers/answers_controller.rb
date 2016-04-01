@@ -21,11 +21,10 @@ class AnswersController < ApplicationController
     if !current_user.nil? && @answer.user_id == current_user.id
       flash[:notice] = I18n.t('answers.delete.success')
       @answer.destroy!
-      redirect_to @question
     else
       flash[:alarm] = I18n.t('answers.delete.not_owner')
-      redirect_to @question
     end
+    redirect_to @question
   end
 
   private
@@ -39,6 +38,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body).merge(:user => current_user)
+    params.require(:answer).permit(:body).merge(user: current_user)
   end
 end

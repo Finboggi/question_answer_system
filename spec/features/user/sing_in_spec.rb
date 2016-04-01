@@ -1,13 +1,10 @@
 require 'rails_helper'
 
-feature 'User sign in', %q{
+feature 'User sign in', %q(
   In order to be able to ask question
   As an user
   I want to be order to sign in
-} do
-
-
-
+) do
   scenario 'Registered user tries to sign in' do
     sign_in(create(:user))
 
