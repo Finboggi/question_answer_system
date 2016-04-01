@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   describe 'GET #index' do
-    let!(:questions) {create_pair(:question) }
-    before {get :index}
+    let!(:questions) { create_pair(:question) }
+    before { get :index }
 
     it 'assigns all questions to @questions' do
       expect(assigns(:questions)).to match_array(questions)
@@ -70,8 +70,8 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     sign_in_user
-    let!(:question) {create(:question, user: @user) }
-    let!(:question_not_owned) {create(:question) }
+    let!(:question) { create(:question, user: @user) }
+    let!(:question_not_owned) { create(:question) }
 
     context 'question is deleted by owner' do
       it 'deletes question' do

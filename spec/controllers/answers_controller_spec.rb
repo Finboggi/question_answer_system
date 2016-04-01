@@ -42,4 +42,33 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+    let!(:answer) { create(:answer, user: @user) }
+    let!(:answer_not_owned) { create(:answer) }
+
+    context 'answer is deleted by owner' do
+      it 'deletes answer' do
+        expect { delete :destroy, id: answer, question_id: answer.question }
+          .to change(Answer, :count).by(-1)
+      end
+
+      it 'renders #question page' do
+        delete :destroy, id: answer, question_id: answer.question
+        expect(response).to redirect_to question_path(answer.question)
+      end
+    end
+    context 'question is deleted by not owner' do
+      it 'deletes question' do
+        expect { delete :destroy, id: answer_not_owned, question_id: answer_not_owned.question }
+          .to change(Answer, :count).by(0)
+      end
+
+      it 'renders :show view' do
+        delete :destroy, id: answer_not_owned, question_id: answer_not_owned.question
+        expect(response).to redirect_to question_path(answer_not_owned.question)
+      end
+    end
+  end
 end

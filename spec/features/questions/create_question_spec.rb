@@ -17,7 +17,7 @@ feature 'create question', %q{
     click_on 'Ask'
 
     expect(page).to have_content I18n.t 'question_created'
-    # TODO проверить что открылась страница с вопросом и там есть заголовок и тело вопроса
+    # TODO: проверить что открылась страница с вопросом и там есть заголовок и тело вопроса
   end
 
   scenario 'Non-authenticated user creates question' do

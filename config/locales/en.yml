@@ -35,3 +35,9 @@ en:
       link: 'Delete question'
       success: 'Your question was deleted'
       not_owner: 'You are not the owner of the question'
+  answers:
+    subheader: 'Answers'
+    delete:
+      link: 'Delete answer'
+      success: 'Your answer was deleted'
+      not_owner: 'You are not the owner of the answer'

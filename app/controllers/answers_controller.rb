@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!
   before_action :find_question
+  before_action :find_answer, only: [:destroy]
 
   def new
     @answer = @question.answers.new
@@ -16,13 +17,28 @@ class AnswersController < ApplicationController
     end
   end
 
+  def destroy
+    if !current_user.nil? && @answer.user_id == current_user.id
+      flash[:notice] = I18n.t('answers.delete.success')
+      @answer.destroy!
+      redirect_to @question
+    else
+      flash[:alarm] = I18n.t('answers.delete.not_owner')
+      redirect_to @question
+    end
+  end
+
   private
+
+  def find_answer
+    @answer = Answer.find(params[:id])
+  end
 
   def find_question
     @question = Question.find(params[:question_id])
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body).merge(:user => current_user)
   end
 end
