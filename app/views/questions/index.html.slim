@@ -1,0 +1,11 @@
+h1 Questions index
+
+p= link_to(t('questions.new.link'), new_question_path)
+
+br
+- if @questions.empty?
+  = t('questions.none')
+- else
+  - @questions.each do |q|
+    = link_to(q.title, q)
+    hr

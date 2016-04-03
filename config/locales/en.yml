@@ -21,3 +21,32 @@
 
 en:
   hello: "Hello world"
+  new_answer_header: 'Give new answer'
+  questions:
+    name: 'Question'
+    plural: 'Questions'
+    none: 'No one asked a question yet'
+    new:
+      link: 'Ask question'
+      button: 'Ask'
+      success: 'Your question successfully created'
+    delete:
+      link: 'Delete question'
+      success: 'Your question was deleted'
+      not_owner: 'You are not the owner of the question'
+  answers:
+    name: 'Answer'
+    plural: 'Answers'
+    none: 'No one answered this question yet'
+    new:
+      link: 'Give answer'
+      button: 'Give answer'
+      success: 'Answer successfully created'
+    delete:
+      link: 'Delete answer'
+      success: 'Your answer was deleted'
+      not_owner: 'You are not the owner of the answer'
+  users:
+    sign_in: 'Sign in'
+    sign_up: 'Sign up'
+    sign_out: 'Sign out'

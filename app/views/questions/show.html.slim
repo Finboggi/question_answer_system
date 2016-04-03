@@ -2,16 +2,18 @@ h1 = @question.title
 
 .question_body = @question.body
 
+- if current_user && current_user.author_of?(@question)
+  = link_to t('questions.delete.link'),  question_path(@question), method: :delete
 hr
-h2 Ответы
-- if @answers.size
 
+h2 =t('answers.plural')
+- if @answers.present?
   - @answers.each do |a|
     .answer = a.body
+    - if current_user && current_user.author_of?(a)
+      = link_to t('answers.delete.link'), question_answer_path(@question, a), method: :delete
     hr
 - else
-  | Пока никто не ответил на этот вопрос
+  = t('answers.none')
 
-
-a href=new_question_answer_path(@question)  Ответить
-
+= render 'answers/form'
