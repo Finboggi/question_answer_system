@@ -23,7 +23,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answers = @question.answers
-    @answer = Answer.new question: @question
+    @answer = Answer.new(question: @question)
   end
 
   def destroy

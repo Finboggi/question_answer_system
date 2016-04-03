@@ -5,11 +5,10 @@ feature 'show all questions', %q(
   Can see all questions
   ) do
   scenario 'user trying to see questions list' do
-    questions = create_pair(:question)
+    questions = create_list(:question, 3)
     visit root_path
 
-    expect(page).to have_content questions.first.title
-    expect(page).to have_content questions.second.title
+    questions.each{ |q| expect(page).to have_content q.title }
     expect(page).to have_content I18n.t('questions.new.link')
   end
 
