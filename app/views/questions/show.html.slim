@@ -7,13 +7,11 @@ h1 = @question.title
 hr
 
 h2 =t('answers.plural')
-- if @answers.present?
-  - @answers.each do |a|
-    .answer = a.body
-    - if current_user && current_user.author_of?(a)
-      = link_to t('answers.delete.link'), question_answer_path(@question, a), method: :delete
-    hr
-- else
-  = t('answers.none')
+.answers
+  - if @answers.present?
+    - @answers.each do |a|
+      = render 'answer', answer: a
+  - else
+    = t('answers.none')
 
 = render 'answers/form'
