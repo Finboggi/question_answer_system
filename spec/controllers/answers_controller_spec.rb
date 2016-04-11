@@ -23,9 +23,11 @@ RSpec.describe AnswersController, type: :controller do
           .to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to question' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(question)
+      # TODO: нужно проверять на добавление
+      it 'render js with new answer' do
+        attributes_for_answer = attributes_for(:answer)
+        post :create, question_id: question.id, answer: attributes_for_answer
+        expect(response).to render_template :new
       end
 
       it 'user authors new answer' do
