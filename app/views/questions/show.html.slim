@@ -6,7 +6,7 @@ h1 = @question.title
   = link_to t('questions.delete.link'),  question_path(@question), method: :delete
 hr
 
-h2 =t('answers.plural')
+h2 = t('answers.plural')
 .answers
   - if @answers.present?
     - @answers.each do |a|
@@ -14,4 +14,7 @@ h2 =t('answers.plural')
   - else
     = t('answers.none')
 
-= render 'answers/form'
+- if current_user
+  = render 'answers/form'
+-else
+  = t('answers.new.sign_in')

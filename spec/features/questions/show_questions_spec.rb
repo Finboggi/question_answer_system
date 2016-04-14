@@ -8,7 +8,7 @@ feature 'show all questions', %q(
     questions = create_list(:question, 3)
     visit root_path
 
-    questions.each{ |q| expect(page).to have_content q.title }
+    questions.each { |q| expect(page).to have_content q.title }
     expect(page).to have_content I18n.t('questions.new.link')
   end
 

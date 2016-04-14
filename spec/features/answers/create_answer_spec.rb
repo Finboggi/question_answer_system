@@ -15,18 +15,15 @@ feature 'give answer', %q(
     visit question_path(question)
 
     fill_in 'Body', with: answer.body
-    click_on I18n.t 'answers.new.button'
+    click_on I18n.t('answers.new.button')
 
-    # expect(current_path).to eq question_path(question)
     within '.answers' do
       expect(page).to have_content answer.body
     end
-    # expect(page).to have_content I18n.t 'answers.new.success'
   end
 
-  # TODO: переписать этот фиче-тест
   scenario 'non-authenticated user sends answer' do
-    visit new_question_answer_path(question)
-    expect(page).to have_content I18n.t 'devise.failure.unauthenticated'
+    visit question_path(question)
+    expect(page).to_not have_css("button[value=\"#{I18n.t('answers.new.button')}\"]")
   end
 end
