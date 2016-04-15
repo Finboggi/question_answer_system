@@ -9,8 +9,7 @@ hr
 h2 = t('answers.plural')
 .answers
   - if @answers.present?
-    - @answers.each do |a|
-      = render 'answer', answer: a
+    = render @question.answers
   - else
     = t('answers.none')
 
