@@ -21,7 +21,6 @@
 
 en:
   hello: "Hello world"
-  new_answer_header: 'Give new answer'
   questions:
     name: 'Question'
     plural: 'Questions'
@@ -39,9 +38,11 @@ en:
     plural: 'Answers'
     none: 'No one answered this question yet'
     new:
+      subheader: 'Give new answer'
       link: 'Give answer'
       button: 'Give answer'
       success: 'Answer successfully created'
+      sign_in: 'You must sign in to give answer'
     delete:
       link: 'Delete answer'
       success: 'Your answer was deleted'

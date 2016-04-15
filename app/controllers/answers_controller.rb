@@ -9,12 +9,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params.merge(user: current_user))
-    if @answer.save
-      flash[:notice] = I18n.t('answers.new.success')
-      redirect_to @question
-    else
-      render :new
-    end
+    @answer.save
   end
 
   def destroy

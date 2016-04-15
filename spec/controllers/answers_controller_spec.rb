@@ -19,17 +19,17 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
     context 'with valid answer' do
       it 'adds answer to database and assigns it to question' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
+        expect { post :create, format: 'js', question_id: question.id, answer: attributes_for(:answer) }
           .to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to question' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(question)
+      it 'render js with new answer' do
+        post :create, format: 'js', question_id: question.id, answer: attributes_for(:answer)
+        expect(response).to render_template :create
       end
 
       it 'user authors new answer' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
+        post :create, format: 'js', question_id: question.id, answer: attributes_for(:answer)
         expect(assigns(:answer).user_id).to eq @user.id
       end
     end
@@ -37,13 +37,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid answer' do
       sign_in_user
       it 'does not add answer to database' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }
+        expect { post :create, format: 'js', question_id: question.id, answer: attributes_for(:invalid_answer) }
           .to_not change(Answer, :count)
       end
 
-      it 're-renders :new answer view' do
-        post :create, question_id: question.id, answer: attributes_for(:invalid_question)
-        expect(response).to render_template :new
+      it 're-renders :create answer view' do
+        post :create, format: 'js', question_id: question.id, answer: attributes_for(:invalid_question)
+        expect(response).to render_template :create
       end
     end
   end
