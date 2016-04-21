@@ -1,5 +1,6 @@
 require_relative '../feature_helper'
 
+#TODO: можно ли отрефачить? 2 и 3 сценарий сильно повторяются
 feature 'delete answer', %q(
   In order to remove my answer from system
   As an authenticated user
@@ -8,7 +9,7 @@ feature 'delete answer', %q(
   given(:user) { create(:user) }
   given(:question) { create(:question, :with_answers, answers_count: 1) }
 
-  scenario 'Authenticated user tries to delete answer he created' do
+  scenario 'Authenticated user tries to delete answer he created', js: true do
     login_as(question.answers.first.user)
     visit question_path(question)
     answer_body = question.answers.first.body

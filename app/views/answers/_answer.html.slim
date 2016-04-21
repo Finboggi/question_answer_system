@@ -1,5 +1,6 @@
-.answer = answer.body
-- if current_user && current_user.author_of?(answer)
-  = link_to t('answers.delete.link'), question_answer_path(@question, answer), method: :delete
+.answer id="answer_#{answer.id}"
+  .answer_body = answer.body
+  - if current_user && current_user.author_of?(answer)
+    = link_to t('answers.delete.link'), question_answer_path(@question, answer), remote: :true, method: :delete
 
 

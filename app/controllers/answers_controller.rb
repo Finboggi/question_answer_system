@@ -19,7 +19,6 @@ class AnswersController < ApplicationController
     else
       flash[:alarm] = I18n.t('answers.delete.not_owner')
     end
-    redirect_to @question
   end
 
   private
