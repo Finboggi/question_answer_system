@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../feature_helper'
 
 feature 'delete answer', %q(
   In order to remove my answer from system
