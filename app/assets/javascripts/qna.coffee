@@ -24,7 +24,7 @@ $ ->
 
 
   show_flash_messages = (jqXHR) ->
-    $('#flash_messages').empty
+    $('#flash_messages').empty()
     flash_messages = get_flash_messages jqXHR
     $.each flash_messages, (type, message) ->
       generate_bootstrap_message type, message

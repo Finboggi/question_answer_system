@@ -9,15 +9,16 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params.merge(user: current_user))
-    @answer.save
+    flash[:success] = I18n.t('answers.new.success') if @answer.save
   end
 
   def destroy
+    @success = false
     if current_user.author_of?(@answer)
       flash[:notice] = I18n.t('answers.delete.success')
-      @answer.destroy!
+      @success = true if @answer.destroy!
     else
-      flash[:alarm] = I18n.t('answers.delete.not_owner')
+      flash[:alert] = I18n.t('answers.delete.not_owner')
     end
   end
 

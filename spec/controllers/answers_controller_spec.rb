@@ -55,24 +55,24 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'answer is deleted by owner' do
       it 'deletes answer' do
-        expect { delete :destroy, id: answer, question_id: answer.question }
+        expect { delete :destroy, format: 'js', id: answer, question_id: answer.question }
           .to change(Answer, :count).by(-1)
       end
 
-      it 'renders #question page' do
-        delete :destroy, id: answer, question_id: answer.question
-        expect(response).to redirect_to question_path(answer.question)
+      it 'renders #destroy viewraol' do
+        delete :destroy, format: 'js', id: answer, question_id: answer.question
+        expect(response).to render_template :destroy
       end
     end
     context 'question is deleted by not owner' do
       it 'deletes question' do
-        expect { delete :destroy, id: answer_not_owned, question_id: answer_not_owned.question }
+        expect { delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question }
           .to_not change(Answer, :count)
       end
 
       it 'renders :show view' do
-        delete :destroy, id: answer_not_owned, question_id: answer_not_owned.question
-        expect(response).to redirect_to question_path(answer_not_owned.question)
+        delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question
+        expect(response).to render_template :destroy
       end
     end
   end

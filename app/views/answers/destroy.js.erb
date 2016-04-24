@@ -1,1 +1,3 @@
-$('#answer_<%= @answer.id %>').remove();
+<% if @success %>
+  $('#answer_<%= @answer.id %>').remove();
+<% end %>
