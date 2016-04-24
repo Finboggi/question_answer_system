@@ -13,10 +13,9 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @success = false
     if current_user.author_of?(@answer)
       flash[:notice] = I18n.t('answers.delete.success')
-      @success = true if @answer.destroy!
+      @answer.destroy!
     else
       flash[:alert] = I18n.t('answers.delete.not_owner')
     end
