@@ -33,6 +33,13 @@ en:
       link: 'Delete question'
       success: 'Your question was deleted'
       not_owner: 'You are not the owner of the question'
+    edit:
+      link: 'Edit question'
+      button: 'Update question'
+      not_owner: 'You are not the owner of the question'
+    update:
+      success: 'Your question successfully updated'
+      not_owner: 'You are not the owner of the question'
   answers:
     name: 'Answer'
     plural: 'Answers'

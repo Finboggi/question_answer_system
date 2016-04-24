@@ -1,9 +1,5 @@
-h1 = @question.title
-
-.question_body = @question.body
-
-- if current_user && current_user.author_of?(@question)
-  = link_to t('questions.delete.link'),  question_path(@question), method: :delete
+#question
+  == render 'question'
 hr
 
 h2 = t('answers.plural')

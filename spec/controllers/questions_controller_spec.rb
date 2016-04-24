@@ -105,4 +105,46 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'GET #edit' do
+    sign_in_user
+    let!(:question) { create(:question, user: @user) }
+    let!(:question_not_owned) { create(:question) }
+
+    context 'question is edited by owner' do
+      before { xhr :get, :edit, format: :js, id: question }
+
+      it 'assigns the requested Question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'renders :show question view' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'question is edited by not owner'
+  end
+
+  describe 'PUT #update' do
+    sign_in_user
+    let!(:question) { create(:question, user: @user) }
+    let!(:question_not_owned) { create(:question) }
+
+    context 'question is updated by owner' do
+      before { question.body = 'Alter question body' }
+      before { xhr :put, :update, format: :js, id: question.id, question: question.attributes }
+
+      it 'assigns the sended Question to @question' do
+        expect(assigns(:question)).to eq question
+        expect(assigns(:question).reload.body).to eq question.body
+      end
+
+      it 'renders :update question view' do
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'question is updated by not owner'
+  end
 end
