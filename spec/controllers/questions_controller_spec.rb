@@ -77,74 +77,95 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'Questions manipulation' do
     sign_in_user
     let!(:question) { create(:question, user: @user) }
     let!(:question_not_owned) { create(:question) }
 
-    context 'question is deleted by owner' do
-      it 'deletes question' do
-        expect { delete :destroy, id: question }
-          .to change(Question, :count).by(-1)
-      end
+    describe 'DELETE #destroy' do
+      context 'question is deleted by owner' do
+        it 'deletes question' do
+          expect { delete :destroy, id: question }
+            .to change(Question, :count).by(-1)
+        end
 
-      it 'renders #index page' do
-        delete :destroy, id: question
-        expect(response).to redirect_to root_path
+        it 'renders #index page' do
+          delete :destroy, id: question
+          expect(response).to redirect_to root_path
+        end
+      end
+      context 'question is deleted by not owner' do
+        it 'deletes question' do
+          expect { delete :destroy, id: question_not_owned }
+            .to_not change(Question, :count)
+        end
+
+        it 'renders :show view' do
+          delete :destroy, id: question_not_owned
+          expect(response).to redirect_to question_path(question_not_owned)
+        end
       end
     end
-    context 'question is deleted by not owner' do
-      it 'deletes question' do
-        expect { delete :destroy, id: question_not_owned }
-          .to_not change(Question, :count)
+
+    describe 'GET #edit' do
+      context 'question is edited by owner' do
+        before { xhr :get, :edit, format: :js, id: question }
+
+        it 'assigns the requested Question to @question' do
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'renders :show question view' do
+          expect(response).to render_template :edit
+        end
       end
 
-      it 'renders :show view' do
-        delete :destroy, id: question_not_owned
-        expect(response).to redirect_to question_path(question_not_owned)
+      context 'question is edited by not owner' do
+        before { xhr :get, :edit, format: :js, id: question_not_owned }
+
+        it 'flashes alert' do
+          expect(flash[:alert]).to_not be_nil
+        end
+
+        it 'renders :show question view' do
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    describe 'PUT #update' do
+      context 'question is updated by owner' do
+        before { question.body = 'Alter question body' }
+        before { xhr :put, :update, format: :js, id: question.id, question: question.attributes }
+
+        it 'assigns the sended Question to @question' do
+          expect(assigns(:question)).to eq question
+          expect(assigns(:question).reload.body).to eq question.body
+        end
+
+        it 'renders :update question view' do
+          expect(response).to render_template :update
+        end
+
+        it 'flashes alert' do
+          expect(flash[:alert]).to be_nil
+        end
+      end
+
+      context 'question is updated by not owner' do
+        before { question_not_owned.body = 'Alter question body' }
+        before { xhr :put, :update, format: :js, id: question_not_owned.id, question: question_not_owned.attributes }
+
+        it 'assigns the old Question to @question'
+        it 'flashes alert' do
+          expect(flash[:alert]).to_not be_nil
+        end
+
+        it 'renders :show question view' do
+          expect(response).to render_template :update
+        end
       end
     end
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-    let!(:question) { create(:question, user: @user) }
-    let!(:question_not_owned) { create(:question) }
-
-    context 'question is edited by owner' do
-      before { xhr :get, :edit, format: :js, id: question }
-
-      it 'assigns the requested Question to @question' do
-        expect(assigns(:question)).to eq question
-      end
-
-      it 'renders :show question view' do
-        expect(response).to render_template :edit
-      end
-    end
-
-    context 'question is edited by not owner'
-  end
-
-  describe 'PUT #update' do
-    sign_in_user
-    let!(:question) { create(:question, user: @user) }
-    let!(:question_not_owned) { create(:question) }
-
-    context 'question is updated by owner' do
-      before { question.body = 'Alter question body' }
-      before { xhr :put, :update, format: :js, id: question.id, question: question.attributes }
-
-      it 'assigns the sended Question to @question' do
-        expect(assigns(:question)).to eq question
-        expect(assigns(:question).reload.body).to eq question.body
-      end
-
-      it 'renders :update question view' do
-        expect(response).to render_template :update
-      end
-    end
-
-    context 'question is updated by not owner'
-  end
 end

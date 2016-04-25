@@ -48,31 +48,100 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'answers manipulation' do
     sign_in_user
     let!(:answer) { create(:answer, user: @user) }
     let!(:answer_not_owned) { create(:answer) }
 
-    context 'answer is deleted by owner' do
-      it 'deletes answer' do
-        expect { delete :destroy, format: 'js', id: answer, question_id: answer.question }
-          .to change(Answer, :count).by(-1)
-      end
+    describe 'DELETE #destroy' do
+      context 'answer is deleted by owner' do
+        it 'deletes answer' do
+          expect { delete :destroy, format: 'js', id: answer, question_id: answer.question }
+            .to change(Answer, :count).by(-1)
+        end
 
-      it 'renders #destroy view' do
-        delete :destroy, format: 'js', id: answer, question_id: answer.question
-        expect(response).to render_template :destroy
+        it 'renders #destroy view' do
+          delete :destroy, format: 'js', id: answer, question_id: answer.question
+          expect(response).to render_template :destroy
+        end
+      end
+      context 'question is deleted by not owner' do
+        it 'not deletes answer' do
+          expect { delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question }
+            .to_not change(Answer, :count)
+        end
+
+        it 'renders :show view' do
+          delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question
+          expect(response).to render_template :destroy
+        end
       end
     end
-    context 'question is deleted by not owner' do
-      it 'deletes question' do
-        expect { delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question }
-          .to_not change(Answer, :count)
+
+    describe 'GET #edit' do
+      context 'answer is edited by owner' do
+        before { xhr :get, :edit, format: :js, question_id: question.id, id: answer }
+
+        it 'assigns the requested Answer to @answer' do
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'renders :show question view' do
+          expect(response).to render_template :edit
+        end
+
+        it 'not flashes alert' do
+          expect(flash[:alert]).to be_nil
+        end
       end
 
-      it 'renders :show view' do
-        delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question
-        expect(response).to render_template :destroy
+      context 'answer is edited by not owner' do
+        before { xhr :get, :edit, format: :js, question_id: question.id, id: answer_not_owned }
+
+        it 'flashes alert' do
+          expect(flash[:alert]).to_not be_nil
+        end
+
+        it 'renders :show question view' do
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    describe 'PUT #update' do
+      context 'answer is updated by owner' do
+        before { answer.body = 'Alter question body' }
+        before { xhr :put, :update, format: :js, question_id: answer.question.id, id: answer, answer: answer.attributes }
+
+        it 'assigns the sended Answer to @answer' do
+          expect(assigns(:answer)).to eq answer
+          expect(assigns(:answer).reload.body).to eq answer.body
+        end
+
+        it 'renders :update answer view' do
+          expect(response).to render_template :update
+        end
+
+        it 'flashes alert' do
+          expect(flash[:alert]).to be_nil
+        end
+      end
+      context 'answer is updated by not owner' do
+        before { answer_not_owned.body = 'Alter question body' }
+        before { xhr :put, :update, format: :js, question_id: answer_not_owned.question.id, id: answer_not_owned, answer: answer_not_owned.attributes }
+
+        it 'assigns the old Answer to @answer' do
+          expect(assigns(:answer)).to eq answer_not_owned
+          expect(assigns(:answer).reload.body).to_not eq answer_not_owned.body
+        end
+
+        it 'renders :update answer view' do
+          expect(response).to render_template :update
+        end
+
+        it 'not flashes alert' do
+          expect(flash[:alert]).to_not be_nil
+        end
       end
     end
   end

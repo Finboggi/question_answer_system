@@ -32,19 +32,20 @@ class QuestionsController < ApplicationController
       @question.destroy!
       redirect_to root_path
     else
-      flash[:alarm] = I18n.t('questions.delete.not_owner')
+      flash[:alert] = I18n.t('questions.delete.not_owner')
       redirect_to @question
     end
   end
 
   def edit
+    flash[:alert] = I18n.t('questions.edit.not_owner') unless current_user.author_of?(@question)
   end
 
   def update
     if current_user.author_of?(@question)
       flash[:notice] = I18n.t('questions.update.success') if @question.update_attributes question_params
     else
-      flash[:alarm] = I18n.t('questions.update.not_owner')
+      flash[:alert] = I18n.t('questions.update.not_owner')
     end
   end
 

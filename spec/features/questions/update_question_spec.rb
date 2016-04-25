@@ -2,7 +2,7 @@ require_relative '../feature_helper'
 
 feature 'update questions', %q(
   In order to update question
-  Authorizes user
+  Authorized user
   must be able to edit questions title and body
   ) do
   given(:user) { create(:user) }

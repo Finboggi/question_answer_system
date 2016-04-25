@@ -1,4 +1,8 @@
-= form_for [@question, @answer], remote: true do |f|
+- form_options = {remote: true}
+- unless @question.new_record?
+  - form_options[:method] =  "patch"
+
+= form_for [@question, @answer], form_options do |f|
   - if @answer.errors.any?
     #error_explanation
       h2 = "#{pluralize(@answer.errors.count, "error")} prohibited this question from being saved:"
@@ -9,4 +13,8 @@
   .field
     = f.label :body
     = f.text_area :body
-  .actions = f.submit t('answers.new.button')
+  .actions
+    - if @question.new_record?
+      = f.submit t('answers.new.button')
+    - else
+      = f.submit t('answers.edit.button')

@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question
-  before_action :find_answer, only: [:destroy]
+  before_action :find_answer, only: [:destroy, :edit, :update]
 
   def new
     @answer = @question.answers.new
@@ -18,6 +18,18 @@ class AnswersController < ApplicationController
       @answer.destroy!
     else
       flash[:alert] = I18n.t('answers.delete.not_owner')
+    end
+  end
+
+  def edit
+    flash[:alert] = I18n.t('answers.edit.not_owner') unless current_user.author_of?(@answer)
+  end
+
+  def update
+    if current_user.author_of?(@answer)
+      flash[:notice] = I18n.t('questions.update.success') if @answer.update_attributes answer_params
+    else
+      flash[:alert] = I18n.t('questions.update.not_owner')
     end
   end
 

@@ -54,6 +54,13 @@ en:
       link: 'Delete answer'
       success: 'Your answer was deleted'
       not_owner: 'You are not the owner of the answer'
+    edit:
+      link: 'Edit answer'
+      button: 'Update answer'
+      not_owner: 'You are not the owner of the answer'
+    update:
+      success: 'Your answer successfully updated'
+      not_owner: 'You are not the owner of the answer'
   users:
     sign_in: 'Sign in'
     sign_up: 'Sign up'

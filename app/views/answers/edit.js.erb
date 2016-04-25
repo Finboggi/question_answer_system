@@ -1,0 +1,2 @@
+$('#edit_answer').remove();
+$('#answer_<%= @answer.id%> .answer_body').after('<div id="edit_answer"><%= j render partial: 'answers/form', format: :html %></div>')
