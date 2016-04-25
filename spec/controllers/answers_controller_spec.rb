@@ -59,7 +59,7 @@ RSpec.describe AnswersController, type: :controller do
           .to change(Answer, :count).by(-1)
       end
 
-      it 'renders #destroy viewraol' do
+      it 'renders #destroy view' do
         delete :destroy, format: 'js', id: answer, question_id: answer.question
         expect(response).to render_template :destroy
       end

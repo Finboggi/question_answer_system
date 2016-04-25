@@ -23,7 +23,19 @@ feature 'update questions', %q(
     expect(page).to have_content 'Alter question body'
   end
 
-  # TODO: следующие два теста очень похожи, рефакторинг?
-  scenario 'Authorized user trying to update other user\'s question'
-  scenario 'Unauthorized user trying to update question'
+  describe  'wrong user' do
+    given(:check_edit_button_absense) do
+      visit question_path(question)
+      expect(page).to_not have_content I18n.t 'questions.edit.link'
+    end
+
+    scenario 'Authorized user trying to update other user\'s question' do
+      login_as(user)
+      check_edit_button_absense
+    end
+
+    scenario 'Unauthorized user trying to update question' do
+      check_edit_button_absense
+    end
+  end
 end
