@@ -27,9 +27,9 @@ class AnswersController < ApplicationController
 
   def update
     if current_user.author_of?(@answer)
-      flash[:notice] = I18n.t('questions.update.success') if @answer.update_attributes answer_params
+      flash[:notice] = I18n.t('answers.update.success') if @answer.update_attributes answer_params
     else
-      flash[:alert] = I18n.t('questions.update.not_owner')
+      flash[:alert] = I18n.t('answers.update.not_owner')
     end
   end
 
