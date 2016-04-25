@@ -18,11 +18,15 @@ class AnswersController < ApplicationController
       @answer.destroy!
     else
       flash[:alert] = I18n.t('answers.delete.not_owner')
+      render status: :forbidden
     end
   end
 
   def edit
-    flash[:alert] = I18n.t('answers.edit.not_owner') unless current_user.author_of?(@answer)
+    unless current_user.author_of?(@answer)
+      flash[:alert] = I18n.t('answers.edit.not_owner')
+      render status: :forbidden
+    end
   end
 
   def update
@@ -30,6 +34,7 @@ class AnswersController < ApplicationController
       flash[:notice] = I18n.t('answers.update.success') if @answer.update_attributes answer_params
     else
       flash[:alert] = I18n.t('answers.update.not_owner')
+      render status: :forbidden
     end
   end
 

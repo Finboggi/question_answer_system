@@ -94,6 +94,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to redirect_to root_path
         end
       end
+
       context 'question is deleted by not owner' do
         it 'deletes question' do
           expect { delete :destroy, id: question_not_owned }
@@ -118,6 +119,10 @@ RSpec.describe QuestionsController, type: :controller do
         it 'renders :show question view' do
           expect(response).to render_template :edit
         end
+
+        it 'flashes no alerts' do
+          expect(flash[:alert]).to be_nil
+        end
       end
 
       context 'question is edited by not owner' do
@@ -127,8 +132,8 @@ RSpec.describe QuestionsController, type: :controller do
           expect(flash[:alert]).to_not be_nil
         end
 
-        it 'renders :show question view' do
-          expect(response).to render_template :edit
+        it 'has 403 status code' do
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -147,7 +152,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to render_template :update
         end
 
-        it 'flashes alert' do
+        it 'flashes no alerts' do
           expect(flash[:alert]).to be_nil
         end
       end
@@ -156,16 +161,19 @@ RSpec.describe QuestionsController, type: :controller do
         before { question_not_owned.body = 'Alter question body' }
         before { xhr :put, :update, format: :js, id: question_not_owned.id, question: question_not_owned.attributes }
 
-        it 'assigns the old Question to @question'
+        it 'assigns the old Question to @question' do
+          expect(assigns(:question)).to eq question_not_owned
+          expect(assigns(:question).reload.body).to_not eq question_not_owned.body
+        end
+
         it 'flashes alert' do
           expect(flash[:alert]).to_not be_nil
         end
 
-        it 'renders :show question view' do
-          expect(response).to render_template :update
+        it 'has 403 status code' do
+          expect(response.status).to eq(403)
         end
       end
     end
   end
-
 end

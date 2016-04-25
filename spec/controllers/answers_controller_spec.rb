@@ -73,7 +73,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'renders :show view' do
           delete :destroy, format: 'js', id: answer_not_owned, question_id: answer_not_owned.question
-          expect(response).to render_template :destroy
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -102,8 +102,8 @@ RSpec.describe AnswersController, type: :controller do
           expect(flash[:alert]).to_not be_nil
         end
 
-        it 'renders :show question view' do
-          expect(response).to render_template :edit
+        it 'has 403 status code' do
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -122,10 +122,11 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to render_template :update
         end
 
-        it 'flashes alert' do
+        it 'flashes no alerts' do
           expect(flash[:alert]).to be_nil
         end
       end
+
       context 'answer is updated by not owner' do
         before { answer_not_owned.body = 'Alter question body' }
         before { xhr :put, :update, format: :js, question_id: answer_not_owned.question.id, id: answer_not_owned, answer: answer_not_owned.attributes }
@@ -135,8 +136,8 @@ RSpec.describe AnswersController, type: :controller do
           expect(assigns(:answer).reload.body).to_not eq answer_not_owned.body
         end
 
-        it 'renders :update answer view' do
-          expect(response).to render_template :update
+        it 'has 403 status code' do
+          expect(response.status).to eq(403)
         end
 
         it 'not flashes alert' do

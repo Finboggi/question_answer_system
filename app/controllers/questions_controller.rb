@@ -38,7 +38,10 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    flash[:alert] = I18n.t('questions.edit.not_owner') unless current_user.author_of?(@question)
+    unless current_user.author_of?(@question)
+      flash[:alert] = I18n.t('questions.edit.not_owner')
+      render status: :forbidden
+    end
   end
 
   def update
@@ -46,6 +49,7 @@ class QuestionsController < ApplicationController
       flash[:notice] = I18n.t('questions.update.success') if @question.update_attributes question_params
     else
       flash[:alert] = I18n.t('questions.update.not_owner')
+      render status: :forbidden
     end
   end
 

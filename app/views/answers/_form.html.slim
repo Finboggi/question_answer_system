@@ -1,5 +1,5 @@
 - form_options = {remote: true}
-- unless @question.new_record?
+- unless @answer.new_record?
   - form_options[:method] =  "patch"
 
 = form_for [@question, @answer], form_options do |f|
@@ -14,7 +14,7 @@
     = f.label :body
     = f.text_area :body
   .actions
-    - if @question.new_record?
+    - if @answer.new_record?
       = f.submit t('answers.new.button')
     - else
       = f.submit t('answers.edit.button')
