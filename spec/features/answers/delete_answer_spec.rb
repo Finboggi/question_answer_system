@@ -25,7 +25,7 @@ feature 'delete answer', %q(
     visit question_path(question)
 
     expect(page).to_not have_link(
-      I18n.t('questions.delete.link'),
+      I18n.t('answers.delete.link'),
       href: question_answer_path(question, question.answers.first)
     )
   end
@@ -33,7 +33,7 @@ feature 'delete answer', %q(
     visit question_path(question)
 
     expect(page).to_not have_link(
-      I18n.t('questions.delete.link'),
+      I18n.t('answers.delete.link'),
       href: question_answer_path(question, question.answers.first)
     )
   end

@@ -61,6 +61,10 @@ en:
     update:
       success: 'Your answer successfully updated'
       not_owner: 'You are not the owner of the answer'
+    accept:
+      link: 'Accept this answer'
+      success: 'Answer accepted'
+      marker: 'Accepted'
   users:
     sign_in: 'Sign in'
     sign_up: 'Sign up'
