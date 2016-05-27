@@ -145,5 +145,25 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
     end
+
+    describe 'PUT #accept' do
+      context 'answer accepted by question owner' do
+        it 'marks answer accepted'
+        it 'renders #accept view'
+        it 'flashes no alerts' do
+          expect(flash[:alert]).to be_nil
+        end
+      end
+      context 'answer accepted by question not owner' do
+        it 'doesnt mark answer accepted'
+        it 'has 403 status code' do
+          expect(response.status).to eq(403)
+        end
+
+        it 'not flashes alert' do
+          expect(flash[:alert]).to_not be_nil
+        end
+      end
+    end
   end
 end

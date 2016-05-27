@@ -3,3 +3,5 @@
   - if current_user && current_user.author_of?(answer)
     = link_to t('answers.delete.link'), question_answer_path(@question, answer), remote: true, method: :delete
     = link_to t('answers.edit.link'), edit_question_answer_path(@question, answer), remote: true
+  - if current_user && current_user.author_of?(@question)
+    = link_to t('answers.accept.link'),  question_answer_accept_path(@question, answer), remote: true, method: :put

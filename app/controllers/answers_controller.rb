@@ -38,6 +38,10 @@ class AnswersController < ApplicationController
     end
   end
 
+  def accept
+
+  end
+
   private
 
   def find_answer
