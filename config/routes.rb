@@ -3,9 +3,8 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   resources :questions do
-    resources :answers do
-      put 'accept'
-    end
+    put 'answers/(:id)/accept', action: :accept, controller: :answers
+    resources :answers
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

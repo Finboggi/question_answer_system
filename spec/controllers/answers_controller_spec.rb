@@ -145,24 +145,52 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
     end
+  end
 
-    describe 'PUT #accept' do
-      context 'answer accepted by question owner' do
-        it 'marks answer accepted'
-        it 'renders #accept view'
-        it 'flashes no alerts' do
-          expect(flash[:alert]).to be_nil
-        end
+  describe 'PUT #accept' do
+    context 'answer accepted by question owner' do
+      let(:question) { create(:question, :with_answers) }
+      let(:answer) { question.answers.first }
+
+      #TODO: login must bi more simple
+      before { @request.env['devise.mapping'] = Devise.mappings[:user]; sign_in question.user }
+      before { answer[:accepted] = 1 }
+      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+
+      it 'marks answer accepted' do
+        expect(assigns(:answer)).to eq answer
+        expect(assigns(:answer).reload.accepted).to eq true
       end
-      context 'answer accepted by question not owner' do
-        it 'doesnt mark answer accepted'
-        it 'has 403 status code' do
-          expect(response.status).to eq(403)
-        end
 
-        it 'not flashes alert' do
-          expect(flash[:alert]).to_not be_nil
-        end
+      it 'renders #accept view' do
+        expect(response).to render_template :accept
+      end
+
+      it 'flashes no alerts' do
+        expect(flash[:alert]).to be_nil
+      end
+    end
+
+    #TODO: needs to be refactored (move 403 and no alerts into macross)
+    context 'answer accepted by question not owner' do
+      let(:question) { create(:question, :with_answers) }
+      let(:answer) { question.answers.first }
+
+      sign_in_user
+      before { answer[:accepted] = 1 }
+      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+
+      it 'doesnt mark answer accepted' do
+        expect(assigns(:answer)).to eq answer
+        expect(assigns(:answer).reload.accepted).not_to eq true
+      end
+
+      it 'has 403 status code' do
+        expect(response.status).to eq(403)
+      end
+
+      it 'not flashes alert' do
+        expect(flash[:alert]).to_not be_nil
       end
     end
   end
