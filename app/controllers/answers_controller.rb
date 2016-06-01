@@ -40,9 +40,10 @@ class AnswersController < ApplicationController
 
   def accept
     if current_user.author_of?(@question)
-      flash[:notice] = I18n.t('answers.update.success') if @answer.update_attributes answer_accept_params
+      @answer.change_acceptance(answer_accept_params[:accepted]).reload
+      flash[:notice] = ( @answer.accepted ? I18n.t('answers.accept.success') :  I18n.t('answers.unaccept.success') )
     else
-      flash[:alert] = I18n.t('answers.update.not_owner')
+      flash[:alert] = I18n.t('question.update.not_owner')
       render status: :forbidden
     end
   end
@@ -50,8 +51,6 @@ class AnswersController < ApplicationController
   private
 
   def find_answer
-    p params
-
     @answer = Answer.find(params[:id])
   end
 

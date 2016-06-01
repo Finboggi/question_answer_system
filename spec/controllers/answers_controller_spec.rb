@@ -152,14 +152,43 @@ RSpec.describe AnswersController, type: :controller do
       let(:question) { create(:question, :with_answers) }
       let(:answer) { question.answers.first }
 
-      #TODO: login must bi more simple
+      #TODO: login must be more simple
+      #TODO: use one before with do-end
       before { @request.env['devise.mapping'] = Devise.mappings[:user]; sign_in question.user }
-      before { answer[:accepted] = 1 }
+      before { answer[:accepted] = true }
       before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+      before { answer.reload }
 
       it 'marks answer accepted' do
         expect(assigns(:answer)).to eq answer
         expect(assigns(:answer).reload.accepted).to eq true
+      end
+
+      it 'renders #accept view' do
+        expect(response).to render_template :accept
+      end
+
+      it 'flashes no alerts' do
+        expect(flash[:alert]).to be_nil
+      end
+    end
+
+    # TODO: Refactor: similar with previous context
+    context 'accepted answer accepted by question owner' do
+      let(:question) { create(:question, :with_answers) }
+      let(:answer) { question.answers.first }
+
+      before { @request.env['devise.mapping'] = Devise.mappings[:user]; sign_in question.user }
+      before {
+        #TODO: move to trait
+        answer[:accepted] = true; answer.save!
+        answer[:accepted] = false
+      }
+      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+
+      it 'remove acceptance marks answer accepted' do
+        expect(assigns(:answer)).to eq answer
+        expect(assigns(:answer).accepted).to eq false
       end
 
       it 'renders #accept view' do
@@ -182,7 +211,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'doesnt mark answer accepted' do
         expect(assigns(:answer)).to eq answer
-        expect(assigns(:answer).reload.accepted).not_to eq true
+        expect(assigns(:answer).accepted).not_to eq true
       end
 
       it 'has 403 status code' do

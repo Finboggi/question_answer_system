@@ -13,6 +13,7 @@ feature 'accept answer', %q(
     visit question_path(question)
 
     within "#answer_#{answer.id}" do
+      save_and_open_page
       click_on I18n.t('answers.accept.link')
     end
 

@@ -1,0 +1,3 @@
+$('.answer_accepted').remove();
+$('.answer_accept_link').text('<%= j t('answers.accept.link') %>');
+$('#answer_<%= @answer.id%>').html('<%= j render @answer%>');

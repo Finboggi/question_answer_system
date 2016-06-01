@@ -65,6 +65,9 @@ en:
       link: 'Accept this answer'
       success: 'Answer accepted'
       marker: 'Accepted'
+    unaccept:
+      link: 'Reject this answer'
+      success: 'Answer acceptance marker removed'
   users:
     sign_in: 'Sign in'
     sign_up: 'Sign up'

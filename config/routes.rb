@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   resources :questions do
-    put 'answers/(:id)/accept', action: :accept, controller: :answers
+    put 'answers/:id/accept', action: :accept, controller: :answers, as: 'answer_accept'
     resources :answers
   end
 
