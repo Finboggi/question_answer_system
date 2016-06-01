@@ -38,6 +38,8 @@ class AnswersController < ApplicationController
     end
   end
 
+  # TODO: не требовать параметра вообще, в этом методе менять значение на противоположное
+  # метод переименовать на acception_change или типа того
   def accept
     if current_user.author_of?(@question)
       @answer.change_acceptance(answer_accept_params[:accepted]).reload
