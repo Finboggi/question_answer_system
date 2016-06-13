@@ -38,12 +38,11 @@ class AnswersController < ApplicationController
     end
   end
 
-  # TODO: не требовать параметра вообще, в этом методе менять значение на противоположное
-  # метод переименовать на acception_change или типа того
   def accept
+    p 'performing accept'
     if current_user.author_of?(@question)
-      @answer.change_acceptance(answer_accept_params[:accepted]).reload
-      flash[:notice] = ( @answer.accepted ? I18n.t('answers.accept.success') :  I18n.t('answers.unaccept.success') )
+      @answer.change_acceptance.reload
+      flash[:notice] = ( @answer.accepted ? I18n.t('answers.accept.success') :  I18n.t('answers.reject.success') )
     else
       flash[:alert] = I18n.t('question.update.not_owner')
       render status: :forbidden
@@ -62,9 +61,5 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
-  end
-
-  def answer_accept_params
-    params.require(:answer).permit(:accepted)
   end
 end

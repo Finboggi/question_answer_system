@@ -1,6 +1,5 @@
 require_relative '../feature_helper'
 
-#TODO: можно ли отрефачить? 2 и 3 сценарий сильно повторяются
 feature 'delete answer', %q(
   In order to remove my answer from system
   As an authenticated user
@@ -8,6 +7,14 @@ feature 'delete answer', %q(
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question, :with_answers, answers_count: 1) }
+  given(:visit_question_not_author_check) do
+    visit question_path(question)
+
+    expect(page).to_not have_link(
+      I18n.t('answers.delete.link'),
+      href: question_answer_path(question, question.answers.first)
+    )
+  end
 
   scenario 'Authenticated user tries to delete answer he created', js: true do
     login_as(question.answers.first.user)
@@ -22,19 +29,9 @@ feature 'delete answer', %q(
 
   scenario 'Authenticated user tries to delete answer of another user' do
     login_as(user)
-    visit question_path(question)
-
-    expect(page).to_not have_link(
-      I18n.t('answers.delete.link'),
-      href: question_answer_path(question, question.answers.first)
-    )
+    visit_question_not_author_check
   end
   scenario 'Non-authenticated user tries to delete answer' do
-    visit question_path(question)
-
-    expect(page).to_not have_link(
-      I18n.t('answers.delete.link'),
-      href: question_answer_path(question, question.answers.first)
-    )
+    visit_question_not_author_check
   end
 end

@@ -65,7 +65,7 @@ en:
       link: 'Accept this answer'
       success: 'Answer accepted'
       marker: 'Accepted'
-    unaccept:
+    reject:
       link: 'Reject this answer'
       success: 'Answer acceptance marker removed'
   users:

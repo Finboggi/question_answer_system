@@ -155,8 +155,7 @@ RSpec.describe AnswersController, type: :controller do
       #TODO: login must be more simple
       #TODO: use one before with do-end
       before { @request.env['devise.mapping'] = Devise.mappings[:user]; sign_in question.user }
-      before { answer[:accepted] = true }
-      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id }
       before { answer.reload }
 
       it 'marks answer accepted' do

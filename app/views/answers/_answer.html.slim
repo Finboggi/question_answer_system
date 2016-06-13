@@ -6,9 +6,4 @@
     = link_to t('answers.delete.link'), question_answer_path(@question, answer), remote: true, method: :delete
     = link_to t('answers.edit.link'), edit_question_answer_path(@question, answer), remote: true
   - if current_user && current_user.author_of?(@question)
-    = form_for [@question, answer], method: :put, remote: true, url:  question_answer_accept_path(@question, answer) do |f|
-      .field
-        = f.hidden_field :accepted, { value: !answer.accepted }
-      .actions
-        - link_ancor = answer.accepted ? t('answers.unaccept.link') : t('answers.accept.link')
-        span.answer_accept_link onclick= "$(this).parents('form').submit();" = link_ancor
+    = link_to answer.accepted ? t('answers.reject.link') : t('answers.accept.link'), question_answer_accept_path(@question, answer), remote: true, method: :put
