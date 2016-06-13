@@ -15,7 +15,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    sign_in_user
+    create_user_and_sign_in
     before { get :new }
 
     it 'assigns a new Question to @question' do
@@ -44,7 +44,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
+    create_user_and_sign_in
     let(:question_attributes) { build(:question).attributes }
 
     context 'with valid question' do
@@ -78,7 +78,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'Questions manipulation' do
-    sign_in_user
+    create_user_and_sign_in
     let!(:question) { create(:question, user: @user) }
     let!(:question_not_owned) { create(:question) }
 
@@ -120,21 +120,13 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to render_template :edit
         end
 
-        it 'flashes no alerts' do
-          expect(flash[:alert]).to be_nil
-        end
+        it { should_not set_flash.now[:alert] }
       end
 
       context 'question is edited by not owner' do
         before { xhr :get, :edit, format: :js, id: question_not_owned }
 
-        it 'flashes alert' do
-          expect(flash[:alert]).to_not be_nil
-        end
-
-        it 'has 403 status code' do
-          expect(response.status).to eq(403)
-        end
+        it_has_403_answer
       end
     end
 
@@ -152,9 +144,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to render_template :update
         end
 
-        it 'flashes no alerts' do
-          expect(flash[:alert]).to be_nil
-        end
+        it { should_not set_flash.now[:alert] }
       end
 
       context 'question is updated by not owner' do
@@ -166,13 +156,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(assigns(:question).reload.body).to_not eq question_not_owned.body
         end
 
-        it 'flashes alert' do
-          expect(flash[:alert]).to_not be_nil
-        end
-
-        it 'has 403 status code' do
-          expect(response.status).to eq(403)
-        end
+        it_has_403_answer
       end
     end
   end

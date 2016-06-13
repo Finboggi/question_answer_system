@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   describe 'GET #new' do
-    sign_in_user
+    create_user_and_sign_in
     before { get :new, question_id: question.id }
 
     it 'assigns a new Answer to @answer' do
@@ -16,7 +16,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
+    create_user_and_sign_in
     context 'with valid answer' do
       it 'adds answer to database and assigns it to question' do
         expect { post :create, format: 'js', question_id: question.id, answer: attributes_for(:answer) }
@@ -35,7 +35,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid answer' do
-      sign_in_user
+      create_user_and_sign_in
       it 'does not add answer to database' do
         expect { post :create, format: 'js', question_id: question.id, answer: attributes_for(:invalid_answer) }
           .to_not change(Answer, :count)
@@ -49,7 +49,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'answers manipulation' do
-    sign_in_user
+    create_user_and_sign_in
     let!(:answer) { create(:answer, user: @user) }
     let!(:answer_not_owned) { create(:answer) }
 
@@ -90,21 +90,13 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to render_template :edit
         end
 
-        it 'not flashes alert' do
-          expect(flash[:alert]).to be_nil
-        end
+        it { should_not set_flash.now[:alert] }
       end
 
       context 'answer is edited by not owner' do
         before { xhr :get, :edit, format: :js, question_id: question.id, id: answer_not_owned }
 
-        it 'flashes alert' do
-          expect(flash[:alert]).to_not be_nil
-        end
-
-        it 'has 403 status code' do
-          expect(response.status).to eq(403)
-        end
+        it_has_403_answer
       end
     end
 
@@ -122,9 +114,7 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to render_template :update
         end
 
-        it 'flashes no alerts' do
-          expect(flash[:alert]).to be_nil
-        end
+        it { should_not set_flash.now[:alert] }
       end
 
       context 'answer is updated by not owner' do
@@ -136,27 +126,20 @@ RSpec.describe AnswersController, type: :controller do
           expect(assigns(:answer).reload.body).to_not eq answer_not_owned.body
         end
 
-        it 'has 403 status code' do
-          expect(response.status).to eq(403)
-        end
-
-        it 'not flashes alert' do
-          expect(flash[:alert]).to_not be_nil
-        end
+        it_has_403_answer
       end
     end
   end
 
   describe 'PUT #accept' do
     context 'answer accepted by question owner' do
-      let(:question) { create(:question, :with_answers) }
-      let(:answer) { question.answers.first }
+      create_question_answers
 
-      #TODO: login must be more simple
-      #TODO: use one before with do-end
-      before { @request.env['devise.mapping'] = Devise.mappings[:user]; sign_in question.user }
-      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id }
-      before { answer.reload }
+      before do
+        sign_in question.user
+        xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id
+        answer.reload
+      end
 
       it 'marks answer accepted' do
         expect(assigns(:answer)).to eq answer
@@ -167,26 +150,19 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :accept
       end
 
-      it 'flashes no alerts' do
-        expect(flash[:alert]).to be_nil
-      end
+      it { should_not set_flash.now[:alert] }
     end
 
-    # TODO: Refactor: similar with previous context
-    context 'accepted answer accepted by question owner' do
-      let(:question) { create(:question, :with_answers) }
-      let(:answer) { question.answers.first }
+    context 'accepted answer rejected by question owner' do
+      create_question_answers accepted_answer: true
 
-      before { @request.env['devise.mapping'] = Devise.mappings[:user]; sign_in question.user }
-      before {
-        #TODO: move to trait
-        answer[:accepted] = true; answer.save!
-        answer[:accepted] = false
-      }
-      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+      before do
+        sign_in question.user
+        xhr :put, :accept, format: :js, question_id: accepted_answer.question.id, id: accepted_answer.id
+      end
 
       it 'remove acceptance marks answer accepted' do
-        expect(assigns(:answer)).to eq answer
+        expect(assigns(:answer)).to eq accepted_answer
         expect(assigns(:answer).accepted).to eq false
       end
 
@@ -199,27 +175,18 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    #TODO: needs to be refactored (move 403 and no alerts into macross)
     context 'answer accepted by question not owner' do
-      let(:question) { create(:question, :with_answers) }
-      let(:answer) { question.answers.first }
+      create_question_answers
 
-      sign_in_user
-      before { answer[:accepted] = 1 }
-      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id, answer: answer.attributes }
+      create_user_and_sign_in
+      before { xhr :put, :accept, format: :js, question_id: answer.question.id, id: answer.id }
 
       it 'doesnt mark answer accepted' do
         expect(assigns(:answer)).to eq answer
         expect(assigns(:answer).accepted).not_to eq true
       end
 
-      it 'has 403 status code' do
-        expect(response.status).to eq(403)
-      end
-
-      it 'not flashes alert' do
-        expect(flash[:alert]).to_not be_nil
-      end
+      it_has_403_answer
     end
   end
 end

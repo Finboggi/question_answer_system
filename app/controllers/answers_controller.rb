@@ -44,7 +44,7 @@ class AnswersController < ApplicationController
       @answer.change_acceptance.reload
       flash[:notice] = ( @answer.accepted ? I18n.t('answers.accept.success') :  I18n.t('answers.reject.success') )
     else
-      flash[:alert] = I18n.t('question.update.not_owner')
+      flash[:alert] = I18n.t('questions.update.not_owner')
       render status: :forbidden
     end
   end
