@@ -24,7 +24,7 @@ feature 'update answers', %q(
     expect(page).to have_content 'Alter answer body'
   end
 
-  describe  'wrong user' do
+  describe 'wrong user' do
     scenario 'Authorized user trying to update other user\'s question' do
       login_as(answer.user)
       visit question_path(question)

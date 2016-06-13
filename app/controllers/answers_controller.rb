@@ -42,7 +42,8 @@ class AnswersController < ApplicationController
     p 'performing accept'
     if current_user.author_of?(@question)
       @answer.change_acceptance.reload
-      flash[:notice] = ( @answer.accepted ? I18n.t('answers.accept.success') :  I18n.t('answers.reject.success') )
+      flash[:notice] =
+        @answer.accepted ? I18n.t('answers.accept.success') : I18n.t('answers.reject.success')
     else
       flash[:alert] = I18n.t('questions.update.not_owner')
       render status: :forbidden

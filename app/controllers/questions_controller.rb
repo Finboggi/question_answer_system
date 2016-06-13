@@ -46,7 +46,8 @@ class QuestionsController < ApplicationController
 
   def update
     if current_user.author_of?(@question)
-      flash[:notice] = I18n.t('questions.update.success') if @question.update_attributes question_params
+      flash[:notice] =
+        I18n.t('questions.update.success') if @question.update_attributes question_params
     else
       flash[:alert] = I18n.t('questions.update.not_owner')
       render status: :forbidden

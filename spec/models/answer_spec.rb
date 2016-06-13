@@ -9,11 +9,12 @@ RSpec.describe Answer, type: :model do
 
   it 'allows only one accepted answer for question' do
     question = create(:question, :with_answers, accepted_answer: true)
-    answer = question.answers.find{ |a| !a.accepted }
+    answer = question.answers.find { |a| !a.accepted }
     answer.accepted = true
     answer.save!
     answer.valid?
 
-    expect(answer.errors.full_messages).to include("Too many accepted only one accepted answer for each question")
+    expect(answer.errors.full_messages)
+      .to include('Too many accepted only one accepted answer for each question')
   end
 end

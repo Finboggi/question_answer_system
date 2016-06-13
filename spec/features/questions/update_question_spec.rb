@@ -23,7 +23,7 @@ feature 'update questions', %q(
     expect(page).to have_content 'Alter question body'
   end
 
-  describe  'wrong user' do
+  describe 'wrong user' do
     given(:check_edit_button_absense) do
       visit question_path(question)
       expect(page).to_not have_content I18n.t 'questions.edit.link'

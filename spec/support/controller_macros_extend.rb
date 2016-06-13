@@ -15,12 +15,10 @@ module ControllerMacrosExtend
     it { should set_flash.now[:alert] }
   end
 
-  def create_question_answers(options={})
+  def create_question_answers(options = {})
     let(:question) { create(:question, :with_answers, options) }
-    let(:answer) {  question.answers.first }
+    let(:answer) { question.answers.first }
 
-    if options[:accepted_answer]
-      let(:accepted_answer) {  question.answers.find{ |a| a.accepted } }
-    end
+    let(:accepted_answer) { question.answers.find(&:accepted) } if options[:accepted_answer]
   end
 end

@@ -148,8 +148,12 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'question is updated by not owner' do
-        before { question_not_owned.body = 'Alter question body' }
-        before { xhr :put, :update, format: :js, id: question_not_owned.id, question: question_not_owned.attributes }
+        before do
+          question_not_owned.body = 'Alter question body'
+          xhr :put,
+              :update,
+              format: :js, id: question_not_owned.id, question: question_not_owned.attributes
+        end
 
         it 'assigns the old Question to @question' do
           expect(assigns(:question)).to eq question_not_owned

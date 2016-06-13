@@ -10,11 +10,12 @@ class Answer < ActiveRecord::Base
 
   def change_acceptance
     unaccept_all if accepted
-    self.update(accepted: !accepted)
+    update(accepted: !accepted)
     self
   end
 
   private
+
   def unaccept_all
     Answer.same_question(question_id).accepted.update_all(accepted: false)
   end
