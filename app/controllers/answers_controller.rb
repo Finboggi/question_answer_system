@@ -39,7 +39,6 @@ class AnswersController < ApplicationController
   end
 
   def accept
-    p 'performing accept'
     if current_user.author_of?(@question)
       @answer.change_acceptance.reload
       flash[:notice] =

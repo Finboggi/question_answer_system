@@ -2,6 +2,7 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   belongs_to :user
 
+  default_scope { order('accepted DESC, created_at DESC') }
   scope :accepted, -> { where(accepted: true) }
   scope :same_question, -> (question_id) { where question_id: question_id }
 
@@ -9,15 +10,15 @@ class Answer < ActiveRecord::Base
   validate :only_one_accepted
 
   def change_acceptance
-    unaccept_all if accepted
+    unaccept_all_but_current unless accepted
     update(accepted: !accepted)
     self
   end
 
   private
 
-  def unaccept_all
-    Answer.same_question(question_id).accepted.update_all(accepted: false)
+  def unaccept_all_but_current
+    Answer.same_question(question_id).accepted.where.not(id: id).update_all(accepted: false)
   end
 
   def only_one_accepted

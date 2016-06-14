@@ -17,4 +17,13 @@ RSpec.describe Answer, type: :model do
     expect(answer.errors.full_messages)
       .to include('Too many accepted only one accepted answer for each question')
   end
+
+  describe 'default scope' do
+    let!(:answer_one) { create(:answer, accepted: false) }
+    let!(:answer_two) { create(:answer, accepted: true) }
+
+    it 'is sorted by acceptance' do
+      expect(Answer.all).to eq [answer_two, answer_one]
+    end
+  end
 end

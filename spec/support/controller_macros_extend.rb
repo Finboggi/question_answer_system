@@ -17,7 +17,7 @@ module ControllerMacrosExtend
 
   def create_question_answers(options = {})
     let(:question) { create(:question, :with_answers, options) }
-    let(:answer) { question.answers.first }
+    let(:answer) { question.answers.find { |a| !a.accepted } }
 
     let(:accepted_answer) { question.answers.find(&:accepted) } if options[:accepted_answer]
   end
