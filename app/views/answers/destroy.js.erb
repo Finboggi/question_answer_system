@@ -1,3 +1,3 @@
-<% unless Answer.exists? id: @answer.id %>
+<% unless @answer.persisted? %>
   $('#answer_<%= @answer.id %>').remove();
 <% end %>

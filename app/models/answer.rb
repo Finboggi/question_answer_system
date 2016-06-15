@@ -10,19 +10,22 @@ class Answer < ActiveRecord::Base
   validate :only_one_accepted
 
   def change_acceptance
-    unaccept_all_but_current unless accepted
-    update(accepted: !accepted)
+    Answer.transaction do
+      unaccept_all_but_current! unless accepted
+      update!(accepted: !accepted)
+    end
+
     self
   end
 
   private
 
-  def unaccept_all_but_current
+  def unaccept_all_but_current!
     Answer.same_question(question_id).accepted.where.not(id: id).update_all(accepted: false)
   end
 
   def only_one_accepted
-    if accepted && Answer.same_question(question_id).accepted.count > 1
+    if accepted && Answer.same_question(question_id).accepted.present?
       errors.add(:too_many_accepted, 'only one accepted answer for each question')
     end
   end
