@@ -1,0 +1,6 @@
+$('.answer_accepted').remove();
+$('.answer_accept_link').text('<%= j t('answers.accept.link') %>');
+$('.answers .answer').attr('data-accepted', '0');
+$('#answer_<%= @answer.id%>').replaceWith('<%= j render @answer%>');
+
+answers.sort();

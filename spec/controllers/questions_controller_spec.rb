@@ -15,7 +15,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    sign_in_user
+    create_user_and_sign_in
     before { get :new }
 
     it 'assigns a new Question to @question' do
@@ -44,7 +44,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
+    create_user_and_sign_in
     let(:question_attributes) { build(:question).attributes }
 
     context 'with valid question' do
@@ -77,31 +77,90 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
-    sign_in_user
+  describe 'Questions manipulation' do
+    create_user_and_sign_in
     let!(:question) { create(:question, user: @user) }
     let!(:question_not_owned) { create(:question) }
 
-    context 'question is deleted by owner' do
-      it 'deletes question' do
-        expect { delete :destroy, id: question }
-          .to change(Question, :count).by(-1)
+    describe 'DELETE #destroy' do
+      context 'question is deleted by owner' do
+        it 'deletes question' do
+          expect { delete :destroy, id: question }
+            .to change(Question, :count).by(-1)
+        end
+
+        it 'renders #index page' do
+          delete :destroy, id: question
+          expect(response).to redirect_to root_path
+        end
       end
 
-      it 'renders #index page' do
-        delete :destroy, id: question
-        expect(response).to redirect_to root_path
+      context 'question is deleted by not owner' do
+        it 'deletes question' do
+          expect { delete :destroy, id: question_not_owned }
+            .to_not change(Question, :count)
+        end
+
+        it 'renders :show view' do
+          delete :destroy, id: question_not_owned
+          expect(response).to redirect_to question_path(question_not_owned)
+        end
       end
     end
-    context 'question is deleted by not owner' do
-      it 'deletes question' do
-        expect { delete :destroy, id: question_not_owned }
-          .to_not change(Question, :count)
+
+    describe 'GET #edit' do
+      context 'question is edited by owner' do
+        before { xhr :get, :edit, format: :js, id: question }
+
+        it 'assigns the requested Question to @question' do
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'renders :show question view' do
+          expect(response).to render_template :edit
+        end
+
+        it { should_not set_flash.now[:alert] }
       end
 
-      it 'renders :show view' do
-        delete :destroy, id: question_not_owned
-        expect(response).to redirect_to question_path(question_not_owned)
+      context 'question is edited by not owner' do
+        before { xhr :get, :edit, format: :js, id: question_not_owned }
+
+        it_has_403_answer
+      end
+    end
+
+    describe 'PUT #update' do
+      context 'question is updated by owner' do
+        before { question.body = 'Alter question body' }
+        before { xhr :put, :update, format: :js, id: question.id, question: question.attributes }
+
+        it 'assigns the sended Question to @question' do
+          expect(assigns(:question)).to eq question
+          expect(assigns(:question).reload.body).to eq question.body
+        end
+
+        it 'renders :update question view' do
+          expect(response).to render_template :update
+        end
+
+        it { should_not set_flash.now[:alert] }
+      end
+
+      context 'question is updated by not owner' do
+        before do
+          question_not_owned.body = 'Alter question body'
+          xhr :put,
+              :update,
+              format: :js, id: question_not_owned.id, question: question_not_owned.attributes
+        end
+
+        it 'assigns the old Question to @question' do
+          expect(assigns(:question)).to eq question_not_owned
+          expect(assigns(:question).reload.body).to_not eq question_not_owned.body
+        end
+
+        it_has_403_answer
       end
     end
   end

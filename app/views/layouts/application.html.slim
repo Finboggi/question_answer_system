@@ -8,7 +8,6 @@ html
   body
     == render 'layouts/user_links'
 
-    p.notice = notice
-    p.alert = alert
+    == render 'layouts/flash_messages'
 
     = yield

@@ -33,6 +33,13 @@ en:
       link: 'Delete question'
       success: 'Your question was deleted'
       not_owner: 'You are not the owner of the question'
+    edit:
+      link: 'Edit question'
+      button: 'Update question'
+      not_owner: 'You are not the owner of the question'
+    update:
+      success: 'Your question successfully updated'
+      not_owner: 'You are not the owner of the question'
   answers:
     name: 'Answer'
     plural: 'Answers'
@@ -47,6 +54,20 @@ en:
       link: 'Delete answer'
       success: 'Your answer was deleted'
       not_owner: 'You are not the owner of the answer'
+    edit:
+      link: 'Edit answer'
+      button: 'Update answer'
+      not_owner: 'You are not the owner of the answer'
+    update:
+      success: 'Your answer successfully updated'
+      not_owner: 'You are not the owner of the answer'
+    accept:
+      link: 'Accept this answer'
+      success: 'Answer accepted'
+      marker: 'Accepted'
+    reject:
+      link: 'Reject this answer'
+      success: 'Answer acceptance marker removed'
   users:
     sign_in: 'Sign in'
     sign_up: 'Sign up'

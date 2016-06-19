@@ -10,6 +10,7 @@ FactoryGirl.define do
     transient do
       answering_user nil
       answers_count 2
+      accepted_answer false
     end
 
     trait :with_answers do
@@ -17,6 +18,10 @@ FactoryGirl.define do
         params_hash = {question_id: question.id}
         params_hash[:user] = evaluator.answering_user unless evaluator.answering_user.nil?
         create_list(:answer, evaluator.answers_count, params_hash)
+        if evaluator.accepted_answer
+          params_hash[:accepted] = true
+          create(:answer, params_hash)
+        end
       end
     end
   end

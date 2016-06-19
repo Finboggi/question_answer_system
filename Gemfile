@@ -34,14 +34,15 @@ gem 'slim-rails'
 # gem 'capistrano-rails', group: :development
 
 gem 'devise'
+gem 'bootstrap-sass'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'selenium-webdriver'
   gem 'database_cleaner'
+  gem 'capybara-webkit'
 end
 
 group :test do

@@ -1,0 +1,7 @@
+h1 = @question.title
+.question_body = @question.body
+
+- if current_user && current_user.author_of?(@question)
+  = link_to t('questions.delete.link'), question_path(@question), method: :delete
+  = link_to t('questions.edit.link'), edit_question_path(@question), remote: true
+#edit_question
