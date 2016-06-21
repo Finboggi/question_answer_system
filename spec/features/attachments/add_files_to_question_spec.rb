@@ -17,13 +17,20 @@ feature 'add files to question', %q(
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Text text'
-    attach_file 'File', 'Gemfile.lock'
 
-    click_on 'Ask'
+    click_link I18n.t('attachments.add')
+
+    all('.upload_file input[type="file"]').each do |input|
+      attach_file input[:name], 'Gemfile.lock'
+    end
+
+    click_on I18n.t('questions.new.button')
 
     expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end
 
   scenario 'User adds files when update question'
+  scenario 'User can download added files (expect)'
+  scenario 'Dont show attachments block if none uploaded'
   scenario 'User deletes files attached to question'
 end

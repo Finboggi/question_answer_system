@@ -5,6 +5,7 @@ hr
 h2 = t('answers.plural')
 .answers
   - if @answers.present?
+    - p @question.answers
     = render @question.answers
   - else
     = t('answers.none')

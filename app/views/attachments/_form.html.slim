@@ -1,5 +1,7 @@
 p = t('attachments.plural') + ':'
-p
+.upload_file
   = f.fields_for :attachments do |a|
-    = a.label :file
+    = a.label t('attachments.label')
     = a.file_field :file
+    = a.link_to_remove t('attachments.remove')
+= f.link_to_add t('attachments.add'), :attachments

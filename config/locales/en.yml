@@ -76,3 +76,6 @@ en:
     name: 'Attachment'
     plural: 'Attachments'
     none: 'No files uploaded'
+    label: 'Upload a file'
+    add: 'Add a file'
+    remove: 'Remove this file'

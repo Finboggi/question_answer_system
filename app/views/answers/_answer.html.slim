@@ -1,3 +1,4 @@
+- p answer
 .answer id="answer_#{answer.id}" data-accepted="#{answer.accepted ? 1 : 0}" data-created-at="#{answer.created_at.iso8601}"
   - if answer.accepted
     .answer_accepted = t('answers.accept.marker')

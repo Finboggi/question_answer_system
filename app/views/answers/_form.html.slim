@@ -2,7 +2,7 @@
 - unless @answer.new_record?
   - form_options[:method] =  "patch"
 
-= form_for [@question, @answer], form_options do |f|
+= nested_form_for [@question, @answer], form_options do |f|
   - if @answer.errors.any?
     #error_explanation
       h2 = "#{pluralize(@answer.errors.count, "error")} prohibited this question from being saved:"
