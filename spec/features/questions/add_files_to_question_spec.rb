@@ -6,7 +6,7 @@ feature 'add files to question', %q(
   I'd like to be able to attach files
 ) do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given(:question) { build(:question) }
 
   background { sign_in(user) }
 
@@ -21,8 +21,9 @@ feature 'add files to question', %q(
 
     click_on 'Ask'
 
-    expect(page).to have_content 'Gemfile.lock'
+    expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end
 
   scenario 'User adds files when update question'
+  scenario 'User deletes files attached to question'
 end
