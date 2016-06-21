@@ -20,6 +20,8 @@ feature 'add files to question', %q(
     attach_file 'File', 'Gemfile.lock'
 
     click_on 'Ask'
+
+    expect(page).to have_content 'Gemfile.lock'
   end
 
   scenario 'User adds files when update question'
