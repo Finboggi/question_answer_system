@@ -1,0 +1,5 @@
+p = t('attachments.plural') + ':'
+p
+  = f.fields_for :attachments do |a|
+    = a.label :file
+    = a.file_field :file

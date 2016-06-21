@@ -13,6 +13,7 @@
   .field
     = f.label :body
     = f.text_area :body
+  = render 'attachments/form', f: f
   .actions
     - if @answer.new_record?
       = f.submit t('answers.new.button')

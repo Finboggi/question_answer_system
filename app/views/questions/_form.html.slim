@@ -16,11 +16,8 @@
   .field
     = f.label :body
     = f.text_area :body
-  p = t('attachments.plural') + ':'
-  p
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
+  = render 'attachments/form', f: f
+
 
   .actions
     - if @question.new_record?

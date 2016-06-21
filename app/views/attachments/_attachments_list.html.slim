@@ -1,0 +1,4 @@
+.attachments
+  - if container.attachments.present?
+    p = t('attachments.plural') + ':'
+    = render container.attachments

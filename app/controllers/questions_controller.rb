@@ -25,6 +25,7 @@ class QuestionsController < ApplicationController
   def show
     @answers = @question.answers
     @answer = Answer.new(question: @question)
+    @answer.attachments.build
   end
 
   def destroy

@@ -10,7 +10,7 @@ feature 'add files to answer', %q(
 
   background { sign_in(user) }
 
-  scenario 'User adds files when asks answer' do
+  scenario 'User adds files when asks answer', js: true do
     answer = build(:answer)
 
     visit question_path(question)
@@ -21,7 +21,7 @@ feature 'add files to answer', %q(
     click_on I18n.t('answers.new.button')
 
     within '.answers' do
-      expect(page).to have_content 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
+      expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
     end
   end
 

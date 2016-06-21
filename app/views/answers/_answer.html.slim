@@ -2,6 +2,8 @@
   - if answer.accepted
     .answer_accepted = t('answers.accept.marker')
   .answer_body = answer.body
+  = render 'attachments/attachments_list', container: answer
+
   - if current_user && current_user.author_of?(answer)
     = link_to t('answers.delete.link'), question_answer_path(@question, answer), remote: true, method: :delete
     = link_to t('answers.edit.link'), edit_question_answer_path(@question, answer), remote: true
