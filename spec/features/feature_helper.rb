@@ -26,4 +26,10 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+end
+
+CarrierWave.configure do |config|
+  config.storage NullStorage
+  config.enable_processing = false
 end
