@@ -69,7 +69,7 @@ RSpec.describe AnswersController, type: :controller do
             .to_not change(Answer, :count)
         end
 
-        it 'renders :show view' do
+        it 'renders 403 response code' do
           delete_answer_request answer_not_owned
           expect(response.status).to eq(403)
         end

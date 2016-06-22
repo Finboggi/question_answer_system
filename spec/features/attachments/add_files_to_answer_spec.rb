@@ -20,8 +20,8 @@ feature 'add files to answer', %q(
       # TODO: заменить на фикстуру файлов
       attach_file input[:name], 'Gemfile.lock'
     end
-
     click_on I18n.t('answers.new.button')
+
 
     expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end

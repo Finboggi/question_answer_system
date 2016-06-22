@@ -8,17 +8,15 @@ feature 'remove files from question', %q(
   given(:question) { create(:question, :with_attachments) }
   given(:attachment) { question.attachments.first }
 
-  background { p question.attachments}
-
-  scenario 'Question\'s owner remove file' do
+  scenario 'Question\'s owner remove file', js: true do
     login_as(question.user)
     visit question_path(question)
 
     within '.attachments #attachment_' + attachment.id.to_s do
-      click_on I18n.t('attachments.remove.link')
+      click_on I18n.t('attachments.delete.link')
     end
 
-    expect(page).to have_content I18n.t('attachments.remove.success')
+    expect(page).to have_content I18n.t('attachments.delete.success')
     expect(page).to_not have_content attachment.file_identifier
   end
 

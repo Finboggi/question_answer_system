@@ -79,7 +79,7 @@ en:
     upload:
       label: 'Upload a file'
       add: 'Add a file'
-    remove:
+    delete:
       link: 'Remove this file'
       success: 'File successfully removed'
       not_owner: 'You are not the owner of that file container'

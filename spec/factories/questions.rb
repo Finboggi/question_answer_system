@@ -23,12 +23,14 @@ FactoryGirl.define do
       after(:create) do |question, evaluator|
         params_hash = { question_id: question.id }
         params_hash[:user] = evaluator.answering_user unless evaluator.answering_user.nil?
+        if evaluator.answers_count > 1
+          create_list(:answer, evaluator.answers_count, params_hash)
+        elsif
+          create_list(:answer, evaluator.answers_count, params_hash)
+        end
         if evaluator.accepted_answer
           params_hash[:accepted] = true
           create(:answer, params_hash)
-          create_list(:answer, evaluator.answers_count - 1, params_hash) if evaluator.answers_count > 1
-        elsif
-        create_list(:answer, evaluator.answers_count, params_hash)
         end
       end
     end
