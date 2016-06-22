@@ -10,7 +10,8 @@ class Answer < ActiveRecord::Base
   validates :body, :question_id, :user_id, presence: true
   validate :only_one_accepted
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, allow_destroy: true,
+                                reject_if: :all_blank
 
   def change_acceptance
     Answer.transaction do

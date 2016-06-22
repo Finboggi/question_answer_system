@@ -21,3 +21,8 @@ window.answers =
     return 1 if Date.parse(a.getAttribute('data-created-at')) > Date.parse(b.getAttribute('data-created-at'))
     return -1 if Date.parse(a.getAttribute('data-created-at')) < Date.parse(b.getAttribute('data-created-at'))
     return 0
+    
+#$(document).on('submit', 'form.new_answer', ->
+#  file_input_tag = $(this).find('input[type="file"]')
+#  $(file_input_tag).parent().remove() if $(file_input_tag).val() == ""
+#);

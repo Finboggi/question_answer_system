@@ -16,13 +16,14 @@ feature 'add files to answer', %q(
     visit question_path(question)
 
     fill_in 'Body', with: answer.body
-    attach_file 'File', 'Gemfile.lock'
+    all('.upload_file input[type="file"]').each do |input|
+      # TODO: заменить на фикстуру файлов
+      attach_file input[:name], 'Gemfile.lock'
+    end
 
     click_on I18n.t('answers.new.button')
 
-    within '.answers' do
-      expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
-    end
+    expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end
 
   scenario 'User adds files when update answer'

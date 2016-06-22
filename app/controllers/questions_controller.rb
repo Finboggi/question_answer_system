@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
-    # @question.attachments.build
+    @question.attachments.build
   end
 
   def index
@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
   def show
     @answers = @question.answers
     @answer = Answer.new(question: @question)
-    # @answer.attachments.build
+    @answer.attachments.build
   end
 
   def destroy
