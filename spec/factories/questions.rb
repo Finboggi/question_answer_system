@@ -11,6 +11,7 @@ FactoryGirl.define do
       answering_user nil
       answers_count 2
       accepted_answer false
+      attach_files_to_answers false
       attachments_count 2
     end
 
@@ -23,14 +24,18 @@ FactoryGirl.define do
       after(:create) do |question, evaluator|
         params_hash = { question_id: question.id }
         params_hash[:user] = evaluator.answering_user unless evaluator.answering_user.nil?
+
+        answer_traits = []
+        answer_traits << :with_attachments if evaluator.attach_files_to_answers
+
         if evaluator.answers_count > 1
-          create_list(:answer, evaluator.answers_count, params_hash)
+          create_list(:answer, evaluator.answers_count, * answer_traits + [params_hash])
         elsif
-          create_list(:answer, evaluator.answers_count, params_hash)
+          create_list(:answer, evaluator.answers_count, * answer_traits + [params_hash])
         end
         if evaluator.accepted_answer
           params_hash[:accepted] = true
-          create(:answer, params_hash)
+          create(:answer, answer_traits, * answer_traits + [params_hash])
         end
       end
     end
