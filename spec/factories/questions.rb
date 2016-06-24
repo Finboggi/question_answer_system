@@ -28,14 +28,14 @@ FactoryGirl.define do
         answer_traits = []
         answer_traits << :with_attachments if evaluator.attach_files_to_answers
 
-        if evaluator.answers_count > 1
-          create_list(:answer, evaluator.answers_count, * answer_traits + [params_hash])
-        elsif
-          create_list(:answer, evaluator.answers_count, * answer_traits + [params_hash])
-        end
+        answers_count = evaluator.answers_count
+        answers_count += 1 if evaluator.accepted_answer && evaluator.answers_count > 1
+
+        create_list(:answer, answers_count, * answer_traits + [params_hash])
+
         if evaluator.accepted_answer
           params_hash[:accepted] = true
-          create(:answer, answer_traits, * answer_traits + [params_hash])
+          create(:answer, * answer_traits + [params_hash])
         end
       end
     end
