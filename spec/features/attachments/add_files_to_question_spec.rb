@@ -5,13 +5,10 @@ feature 'add files to question', %q(
   as question's author
   I'd like to be able to attach files
 ) do
-  # TODO: не нравится создание пользователя и вопроса
-  given(:user) { create(:user) }
-  given(:question) { build(:question) }
-
-  background { sign_in(user) }
 
   scenario 'User adds files when asks question', js: true do
+    question = build(:question)
+    sign_in(create(:user))
     visit questions_path
 
     click_on I18n.t 'questions.new.link'
@@ -28,10 +25,24 @@ feature 'add files to question', %q(
 
     expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end
-  # TODO: test unauthorized user and not owner of the question
-  # TODO: move update attachments to separate spec
-  scenario 'User adds files when update question'
-  scenario 'User can download added files (expect)'
-  scenario 'Dont show attachments block if none uploaded'
-  scenario 'User deletes files attached to question'
+
+  scenario 'User adds files when update question', js: true do
+    question = create(:question)
+    login_as(question.user)
+    visit question_path(question)
+
+    click_on I18n.t 'questions.edit.link'
+
+    within '#edit_question' do
+      expect(page).to have_css '.upload_file input[type="file"]'
+
+      all('.upload_file input[type="file"]').each do |input|
+        attach_file input[:name], 'Gemfile.lock'
+      end
+
+      click_on I18n.t 'questions.edit.button'
+    end
+
+    expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
+  end
 end

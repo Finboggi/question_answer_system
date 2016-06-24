@@ -1,3 +1,5 @@
 .attachment id="attachment_#{attachment.id}"
   = link_to attachment.file_identifier, attachment.file_url
-  = link_to I18n.t('attachments.delete.link'), attachment_path(attachment), remote: true, method: :delete
+
+  - if current_user && current_user.author_of?(attachment.attachable)
+    = link_to I18n.t('attachments.delete.link'), attachment_path(attachment), remote: true, method: :delete

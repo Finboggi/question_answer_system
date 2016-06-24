@@ -84,6 +84,10 @@ RSpec.describe AnswersController, type: :controller do
           expect(assigns(:answer)).to eq answer
         end
 
+        it 'builds a new Attachment for @answer' do
+          expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
+        end
+
         it 'renders :show question view' do
           expect(response).to render_template :edit
         end

@@ -20,6 +20,20 @@ feature 'remove files from question', %q(
     expect(page).to_not have_content attachment.file_identifier
   end
 
-  scenario 'Not owner of the question tries to remove file'
-  scenario 'Unauthorized user tries to remove file'
+  scenario 'Not owner of the question tries to remove file' do
+    login_as(create(:user))
+    visit question_path(question)
+
+    within '#question' do
+      expect(page).to_not have_content I18n.t('attachments.delete.link')
+    end
+  end
+
+  scenario 'Unauthorized user tries to remove file' do
+    visit question_path(question)
+
+    within '#question' do
+      expect(page).to_not have_content I18n.t('attachments.delete.link')
+    end
+  end
 end

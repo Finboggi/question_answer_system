@@ -1,8 +1,13 @@
 p = t('attachments.plural') + ':'
 .upload_file
   = f.fields_for :attachments do |a|
-    = a.label t('attachments.upload.label')
-    = a.file_field :file
-    = a.link_to_remove t('attachments.delete.link')
+    - if a.object.persisted?
+      = link_to a.object.file_identifier, a.object.file_url
+      = a.label t('attachments.delete.link')
+      = a.check_box :_destroy
+    - else
+      = a.label t('attachments.upload.label')
+      = a.file_field :file
 
-= f.link_to_add t('attachments.upload.add'), :attachments
+.upload_more_files
+  = f.link_to_add t('attachments.upload.add'), :attachments

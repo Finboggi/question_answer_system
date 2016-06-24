@@ -40,10 +40,13 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    @question.attachments.build
     unless current_user.author_of?(@question)
       flash[:alert] = I18n.t('questions.edit.not_owner')
       render status: :forbidden
     end
+
+
   end
 
   def update
