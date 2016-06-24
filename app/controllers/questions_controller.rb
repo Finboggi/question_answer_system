@@ -45,8 +45,6 @@ class QuestionsController < ApplicationController
       flash[:alert] = I18n.t('questions.edit.not_owner')
       render status: :forbidden
     end
-
-
   end
 
   def update

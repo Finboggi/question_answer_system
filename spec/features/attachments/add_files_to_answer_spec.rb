@@ -5,7 +5,6 @@ feature 'add files to answer', %q(
   as answer's author
   I'd like to be able to attach files
 ) do
-
   scenario 'User adds files when asks answer', js: true do
     question = create(:question)
     answer = build(:answer)
@@ -17,7 +16,6 @@ feature 'add files to answer', %q(
       attach_file input[:name], 'Gemfile.lock'
     end
     click_on I18n.t('answers.new.button')
-
 
     expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end

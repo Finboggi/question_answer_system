@@ -5,7 +5,6 @@ feature 'add files to question', %q(
   as question's author
   I'd like to be able to attach files
 ) do
-
   scenario 'User adds files when asks question', js: true do
     question = build(:question)
     sign_in(create(:user))
@@ -13,8 +12,8 @@ feature 'add files to question', %q(
 
     click_on I18n.t 'questions.new.link'
 
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'Text text'
+    fill_in 'Title', with: question.title
+    fill_in 'Body', with: question.body
     2.times { click_link I18n.t('attachments.upload.add') }
 
     all('.upload_file input[type="file"]').each do |input|

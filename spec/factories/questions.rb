@@ -51,6 +51,6 @@ FactoryGirl.define do
   factory :invalid_question, class: 'Question' do
     title 'MyString'
     body ''
-    association :user, :factory => :user
+    association :user, factory: :user
   end
 end

@@ -9,7 +9,8 @@ RSpec.describe AttachmentsController, type: :controller do
       before { sign_in question.user }
 
       it 'deletes attachment' do
-        expect { delete :destroy, format: 'js', id: attachment }.to change(Attachment, :count).by(-1)
+        expect { delete :destroy, format: 'js', id: attachment }
+          .to change(Attachment, :count).by(-1)
       end
 
       it 'renders #destroy view' do
@@ -23,8 +24,7 @@ RSpec.describe AttachmentsController, type: :controller do
       before { sign_in user }
 
       it 'not deletes attachment' do
-        expect { delete :destroy, format: 'js', id: attachment }
-            .to_not change(Answer, :count)
+        expect { delete :destroy, format: 'js', id: attachment }.to_not change(Answer, :count)
       end
 
       it 'renders 403 status' do
