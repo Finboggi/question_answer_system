@@ -36,6 +36,7 @@ gem 'slim-rails'
 gem 'devise'
 gem 'bootstrap-sass'
 gem 'carrierwave'
+# TODO: change remotipart to asynchronous file upload
 gem 'remotipart'
 gem 'nested_form'
 

@@ -38,4 +38,23 @@ feature 'remove files from question', %q(
       expect(page).to_not have_content  I18n.t('attachments.delete.link')
     end
   end
+
+  scenario 'Answer\'s owner remove file via update', js: true do
+    login_as(answer.user)
+    visit question_path(question)
+    click_on I18n.t 'answers.edit.link'
+
+    within "#answer_#{answer.id}" do
+      click_on I18n.t 'answers.edit.link'
+    end
+
+    within "#update_attachment_#{attachment.id}" do
+      find(:css, '.upload_file input[type="checkbox"]').set(true)
+    end
+
+    click_on I18n.t 'answers.edit.button'
+
+    expect(page).to_not have_content attachment.file_identifier
+    expect(page).to have_content I18n.t('answers.update.success')
+  end
 end

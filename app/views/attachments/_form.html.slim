@@ -2,9 +2,10 @@ p = t('attachments.plural') + ':'
 .upload_file
   = f.fields_for :attachments do |a|
     - if a.object.persisted?
-      = link_to a.object.file_identifier, a.object.file_url
-      = a.label t('attachments.delete.link')
-      = a.check_box :_destroy
+      div id="update_attachment_#{a.object.id}"
+        = link_to a.object.file_identifier, a.object.file_url
+        = a.label t('attachments.delete.link')
+        = a.check_box :_destroy
     - else
       = a.label t('attachments.upload.label')
       = a.file_field :file

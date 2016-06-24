@@ -21,4 +21,24 @@ feature 'add files to answer', %q(
 
     expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
   end
+
+  scenario 'Authorized user trying to add file while updating his question', js: true do
+    question = create(:question, :with_answers)
+    answer = question.answers.first
+
+    login_as(answer.user)
+    visit question_path(question)
+
+    within "#answer_#{answer.id}" do
+      click_on I18n.t 'answers.edit.link'
+    end
+
+    within '#edit_answer' do
+      input = find '.upload_file input[type="file"]'
+      attach_file input[:name], 'Gemfile.lock'
+      click_on I18n.t 'answers.edit.button'
+    end
+
+    expect(page).to have_link 'Gemfile.lock', href: '/uploads/attachment/file/1/Gemfile.lock'
+  end
 end
