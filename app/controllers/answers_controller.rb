@@ -27,6 +27,8 @@ class AnswersController < ApplicationController
       flash[:alert] = I18n.t('answers.edit.not_owner')
       render status: :forbidden
     end
+
+    @answer.attachments.build
   end
 
   def update
@@ -60,6 +62,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
   end
 end

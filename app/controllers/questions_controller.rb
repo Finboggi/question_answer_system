@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    @question.attachments.build
   end
 
   def index
@@ -24,6 +25,7 @@ class QuestionsController < ApplicationController
   def show
     @answers = @question.answers
     @answer = Answer.new(question: @question)
+    @answer.attachments.build
   end
 
   def destroy
@@ -38,6 +40,7 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    @question.attachments.build
     unless current_user.author_of?(@question)
       flash[:alert] = I18n.t('questions.edit.not_owner')
       render status: :forbidden
@@ -57,7 +60,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
   end
 
   def find_question

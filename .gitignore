@@ -17,3 +17,5 @@
 /.rspec
 
 /.byebug_history
+
+/public/uploads/*

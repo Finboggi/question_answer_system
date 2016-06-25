@@ -72,3 +72,14 @@ en:
     sign_in: 'Sign in'
     sign_up: 'Sign up'
     sign_out: 'Sign out'
+  attachments:
+    name: 'Attachment'
+    plural: 'Attachments'
+    none: 'No files uploaded'
+    upload:
+      label: 'Upload a file'
+      add: 'Add a file'
+    delete:
+      link: 'Remove this file'
+      success: 'File successfully removed'
+      not_owner: 'You are not the owner of that file container'

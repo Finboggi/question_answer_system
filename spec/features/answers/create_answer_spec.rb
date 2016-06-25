@@ -10,7 +10,7 @@ feature 'give answer', %q(
 
   scenario 'authenticated user give answer', js: true do
     sign_in(user)
-    answer = create(:answer)
+    answer = build(:answer)
 
     visit question_path(question)
 

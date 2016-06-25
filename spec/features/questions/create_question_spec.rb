@@ -7,17 +7,18 @@ feature 'create question', %q(
 ) do
   scenario 'authenticated user creates question' do
     login_as(create(:user))
+    question = build(:question)
 
     visit questions_path
     click_on I18n.t 'questions.new.link'
 
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'Text text'
-    click_on 'Ask'
+    fill_in 'Title', with: question.title
+    fill_in 'Body', with: question.body
+    click_on I18n.t('questions.new.button')
 
     expect(page).to have_content I18n.t 'questions.new.success'
-    expect(page).to have_content 'Test question'
-    expect(page).to have_content 'Text text'
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
   end
 
   scenario 'Non-authenticated user creates question' do

@@ -1,8 +1,8 @@
-- form_options = {remote: true}
+- form_options = { remote: true }
 - unless @answer.new_record?
   - form_options[:method] =  "patch"
 
-= form_for [@question, @answer], form_options do |f|
+= nested_form_for [@question, @answer], form_options do |f|
   - if @answer.errors.any?
     #error_explanation
       h2 = "#{pluralize(@answer.errors.count, "error")} prohibited this question from being saved:"
@@ -13,6 +13,7 @@
   .field
     = f.label :body
     = f.text_area :body
+  = render 'attachments/form', f: f
   .actions
     - if @answer.new_record?
       = f.submit t('answers.new.button')

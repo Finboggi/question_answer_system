@@ -69,7 +69,7 @@ RSpec.describe AnswersController, type: :controller do
             .to_not change(Answer, :count)
         end
 
-        it 'renders :show view' do
+        it 'renders 403 response code' do
           delete_answer_request answer_not_owned
           expect(response.status).to eq(403)
         end
@@ -82,6 +82,10 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'assigns the requested Answer to @answer' do
           expect(assigns(:answer)).to eq answer
+        end
+
+        it 'builds a new Attachment for @answer' do
+          expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
         end
 
         it 'renders :show question view' do

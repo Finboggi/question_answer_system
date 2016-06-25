@@ -27,3 +27,8 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 end
+
+CarrierWave.configure do |config|
+  config.storage NullStorage
+  config.enable_processing = false
+end

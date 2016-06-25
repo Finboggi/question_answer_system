@@ -2,7 +2,7 @@
 - unless @question.new_record?
   - form_options = {remote: true, method: "patch"}
 
-= form_for @question, form_options do |f|
+= nested_form_for  @question, form_options do |f|
   - if @question.errors.any?
     #error_explanation
       h2 = "#{pluralize(@question.errors.count, "error")} prohibited this question from being saved:"
@@ -16,6 +16,9 @@
   .field
     = f.label :body
     = f.text_area :body
+  = render 'attachments/form', f: f
+
+
   .actions
     - if @question.new_record?
       = f.submit t('questions.new.button')

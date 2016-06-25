@@ -12,14 +12,15 @@ feature 'update answers', %q(
   scenario 'Authorized user trying to update his question', js: true do
     login_as(answer.user)
     visit question_path(question)
+
     within "#answer_#{answer.id}" do
       click_on I18n.t 'answers.edit.link'
     end
+
     within '#edit_answer' do
       fill_in 'Body', with: 'Alter answer body'
       click_on I18n.t 'answers.edit.button'
     end
-
     expect(page).to have_content I18n.t 'answers.update.success'
     expect(page).to have_content 'Alter answer body'
   end
