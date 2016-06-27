@@ -4,8 +4,13 @@ Rails.application.routes.draw do
 
   resources :questions do
     put 'answers/:id/accept', action: :accept, controller: :answers, as: 'answer_accept'
-    resources :answers
+    resources :answers do
+      resources :votes
+    end
+    resources :votes
   end
+
+
 
   delete 'attachments/:id' => 'attachments#destroy', as: 'attachment'
 

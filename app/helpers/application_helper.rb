@@ -7,4 +7,8 @@ module ApplicationHelper
       notice: 'alert-info'
     }[flash_type.to_sym] || flash_type
   end
+
+  def voted?(votable)
+    Votes.where( { user: current_user, votable: votable } ) ? true : false
+  end
 end
