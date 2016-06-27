@@ -1,13 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  concern :votable do
+    post :vote
+  end
+
   root to: 'questions#index'
 
-  resources :questions do
+  resources :questions, concerns: [:votable] do
     put 'answers/:id/accept', action: :accept, controller: :answers, as: 'answer_accept'
-    resources :answers do
-      resources :votes
-    end
-    resources :votes
+    resources :answers, concerns: [:votable]
   end
 
 

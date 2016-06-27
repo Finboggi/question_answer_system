@@ -2,6 +2,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :index]
   before_action :find_question, only: [:show, :destroy, :edit, :update]
 
+  include Voted
+  
   def new
     @question = Question.new
     @question.attachments.build
@@ -15,7 +17,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params.merge(user: current_user))
 
     if @question.save
-      flash[:notice] = I18n.t 'questions.new.success'
+      flash[:notice] = t 'questions.new.success'
       redirect_to @question
     else
       render :new
@@ -30,11 +32,11 @@ class QuestionsController < ApplicationController
 
   def destroy
     if current_user.author_of?(@question)
-      flash[:notice] = I18n.t('questions.delete.success')
+      flash[:notice] = t('questions.delete.success')
       @question.destroy!
       redirect_to root_path
     else
-      flash[:alert] = I18n.t('questions.delete.not_owner')
+      flash[:alert] = t('questions.delete.not_owner')
       redirect_to @question
     end
   end
@@ -42,7 +44,7 @@ class QuestionsController < ApplicationController
   def edit
     @question.attachments.build
     unless current_user.author_of?(@question)
-      flash[:alert] = I18n.t('questions.edit.not_owner')
+      flash[:alert] = t('questions.edit.not_owner')
       render status: :forbidden
     end
   end
@@ -50,9 +52,9 @@ class QuestionsController < ApplicationController
   def update
     if current_user.author_of?(@question)
       flash[:notice] =
-        I18n.t('questions.update.success') if @question.update_attributes question_params
+        t('questions.update.success') if @question.update_attributes question_params
     else
-      flash[:alert] = I18n.t('questions.update.not_owner')
+      flash[:alert] = t('questions.update.not_owner')
       render status: :forbidden
     end
   end
