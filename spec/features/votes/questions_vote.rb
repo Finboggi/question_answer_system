@@ -19,6 +19,11 @@ feature 'questions vote', %q(
       end
 
       expect(page).to have_content I18n.t('votes.for.success')
+
+      within '#question' do
+        expect(page).to have_no_link I18n.t('votes.for.link')
+        expect(page).to have_no_link I18n.t('votes.against.link')
+      end
     end
 
     scenario 'authorized user votes against other user\'s question', js: true  do
@@ -31,6 +36,10 @@ feature 'questions vote', %q(
       end
 
       expect(page).to have_content I18n.t('votes.against.success')
+
+      within '#question' do
+        expect_no_vote_links
+      end
     end
 
 
@@ -39,23 +48,52 @@ feature 'questions vote', %q(
       visit question_path(question)
 
       within '#question' do
-        expect(page).to have_no_link I18n.t('votes.for.link')
-        expect(page).to have_no_link I18n.t('votes.against.link')
+        expect_no_vote_links
       end
     end
+
     scenario 'unauthorized user votes for or against question' do
       visit question_path(question)
 
       within '#question' do
-        expect(page).to have_no_link I18n.t('votes.for.link')
-        expect(page).to have_no_link I18n.t('votes.against.link')
+        expect_no_vote_links
+      end
+    end
+  end
+
+  describe 'vote withdrawing' do
+    given (:question) { create(:question, :with_votes) }
+
+    scenario 'authorized user withdraws his vote' do
+      login_as(question.votes.first.user)
+      visit question_path(question)
+
+      within '#question' do
+        click_on I18n.t('votes.unvote.link')
+        expect(page).to have_link I18n.t('votes.for.link')
+        expect(page).to have_link I18n.t('votes.against.link')
+      end
+
+      expect(page).to have_content I18n.t('votes.revote.success')
+    end
+
+    scenario 'authorized user (not voted) withdraw' do
+      login_as(create(:user))
+      visit question_path(question)
+
+      within '#question' do
+        expect(page).to have_no_link I18n.t('votes.revote.link')
       end
     end
 
+    scenario 'unauthorized user tries to withdraw vote' do
+      visit question_path(question)
+
+      within '#question' do
+        expect(page).to have_no_link I18n.t('votes.revote.link')
+      end
+    end
   end
 
 
-  scenario 'authorized user withdraws his vote'
-  scenario 'authorized user (not voted) withdraw'
-  scenario 'unauthorized user tries to withdraw vote'
 end

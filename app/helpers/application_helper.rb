@@ -9,6 +9,10 @@ module ApplicationHelper
   end
 
   def voted?(votable)
-    Votes.where( { user: current_user, votable: votable } ) ? true : false
+    Vote.where( { user_id: current_user.id, votable: votable } ).present? ? true : false
+  end
+
+  def not_voted?(votable)
+    !voted? votable
   end
 end

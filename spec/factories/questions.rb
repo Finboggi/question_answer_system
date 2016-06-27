@@ -15,6 +15,13 @@ FactoryGirl.define do
       attachments_count 2
     end
 
+    trait :with_votes do
+      after(:create) do |question, evaluator|
+        params_hash = { votable_id: question.id, votable_type: question.class.name }
+        create_list(:vote, 2, params_hash)
+      end
+    end
+
     trait :with_answers_and_attachments do
       with_answers
       with_attachments

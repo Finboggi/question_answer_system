@@ -92,4 +92,7 @@ en:
       link: 'vote against'
       marker: 'voted against'
       success: 'You have voted against'
-    revote: 'revote'
+    unvote:
+      link: 'Revote!'
+      success: 'Now you can vote again'
+    sum: 'Total votes: '

@@ -2,7 +2,7 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_votable, only: [:vote]
+    before_action :find_votable, only: [:vote, :unvote]
   end
 
   def vote
@@ -18,14 +18,24 @@ module Voted
     end
   end
 
+  def unvote
+    @vote = @votable.votes.where(user: current_user).first
+    flash[:success] = t('votes.unvote.success') if @vote.destroy!
+    render :text => '', :layout => nil
+  end
+
   private
 
   def model_klass
     controller_name.classify.constantize
   end
 
+  def param_id_name
+    controller_name.classify.downcase + '_id'
+  end
+
   def find_votable
-    @votable = model_klass.find(params[:id])
+    @votable = model_klass.find(params[param_id_name])
   end
 
   # TODO: в value интересует только знак, на самом деле всегда +/- 1
@@ -34,10 +44,14 @@ module Voted
   end
 
   def vote_value
-    vote_params[:value].to_i > 0 ? 1 : -1
+    vote_positive? ? 1 : -1
   end
 
   def vote_success_message
-    vote_params[:value].to_i > 0 ? t('votes.for.success') : t('votes.against.success')
+    vote_positive? ? t('votes.for.success') : t('votes.against.success')
+  end
+
+  def vote_positive?
+    vote_params[:value].to_i > 0
   end
 end

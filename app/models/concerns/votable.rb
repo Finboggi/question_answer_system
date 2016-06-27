@@ -5,9 +5,7 @@ module Votable
     has_many :votes, as: :votable, dependent: :destroy
   end
 
-  private
-
-  def current_user_vote
-    self.votes.where( { user: current_user } )
+  def votes_sum
+    Vote.where( { votable: self } ).sum(:value)
   end
 end

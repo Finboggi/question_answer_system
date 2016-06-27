@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  # TODO: spec this concern!
   concern :votable do
     post :vote
+    delete :unvote
   end
 
   root to: 'questions#index'
