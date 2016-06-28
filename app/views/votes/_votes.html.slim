@@ -1,10 +1,10 @@
 .votes
   .votes_sum
     = t('votes.sum')
-    = votable.votes_sum.to_s
+    .numeric = votable.votes_sum
 
   - if current_user && !current_user.author_of?(votable)
-    - if not_voted? votable
+    - if votable.not_voted? current_user
       = link_to t('votes.for.link'), polymorphic_url([votable, :vote]),\
         data: { params: { vote: { value: 1 } } },\
         remote: true,\
@@ -14,7 +14,8 @@
         remote: true,\
         method: :post
     - else
-      = link_to t('votes.against.link'), polymorphic_url([votable, :unvote]), \
+      .marker = voted_marker votable
+      = link_to t('votes.unvote.link'), polymorphic_url([votable, :unvote]), \
         remote: true, \
         method: :delete
 

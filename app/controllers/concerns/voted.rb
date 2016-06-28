@@ -3,6 +3,8 @@ module Voted
 
   included do
     before_action :find_votable, only: [:vote, :unvote]
+
+    include VotesHelper
   end
 
   def vote
@@ -38,7 +40,6 @@ module Voted
     @votable = model_klass.find(params[param_id_name])
   end
 
-  # TODO: в value интересует только знак, на самом деле всегда +/- 1
   def vote_params
     params.require(:vote).permit(:value)
   end
@@ -52,6 +53,6 @@ module Voted
   end
 
   def vote_positive?
-    vote_params[:value].to_i > 0
+    vote_params[:value].to_i >= 0
   end
 end
