@@ -3,19 +3,19 @@
     = t('votes.sum')
     .numeric = votable.votes_sum
 
-  - if current_user && !current_user.author_of?(votable)
-    - if votable.not_voted? current_user
-      = link_to t('votes.for.link'), polymorphic_url([votable, :vote]),\
-        data: { params: { vote: { value: 1 } } },\
-        remote: true,\
-        method: :post
-      = link_to t('votes.against.link'), polymorphic_url([votable, :vote]),\
-        data: { params: { vote: { value: -1 } } },\
-        remote: true,\
-        method: :post
-    - else
-      .marker = voted_marker votable
-      = link_to t('votes.unvote.link'), polymorphic_url([votable, :unvote]), \
-        remote: true, \
-        method: :delete
-
+  .votes_actions
+    - if current_user && !current_user.author_of?(votable)
+      - if votable.not_voted? current_user
+        = link_to t('votes.for.link'), vote_url_json(votable),\
+          data: { params: { vote: { value: 1 } } },\
+          remote: true,\
+          method: :post
+        = link_to t('votes.against.link'), vote_url_json(votable),\
+          data: { params: { vote: { value: -1 } } },\
+          remote: true,\
+          method: :post
+      - else
+        .marker = voted_marker votable
+        = link_to t('votes.unvote.link'), unvote_url_json(votable), \
+          remote: true, \
+          method: :delete
