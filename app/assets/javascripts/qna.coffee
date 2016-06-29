@@ -38,6 +38,7 @@ $ ->
     $(votable_node_id + ' .votes_actions>div').each ->
       $(@).toggleClass('display_none')
     $(votable_node_id + ' .votes_sum .numeric').text vote_json['votes_sum']
+    $(votable_node_id + ' .votes_actions .marker').text vote_json['vote_marker']
   .bind 'ajax:error', (e, data, status, xhr) ->
     $('#flash_messages').empty()
     errors = data.responseJSON['errors']

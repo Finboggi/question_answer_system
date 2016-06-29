@@ -11,13 +11,13 @@ module Voted
     @vote = @votable.votes.new( {
         votable: @votable,
         user_id: current_user.id,
-        value: vote_value
+        value: vote_params[:value]
                                 } )
 
     respond_to do |format|
       if @vote.save
         flash[:success] = vote_success_message
-        format.json { render json: { vote: @vote, votes_sum: @votable.votes_sum } }
+        format.json { render json: { vote: @vote, votes_sum: @votable.votes_sum, vote_marker: voted_marker(@votable) } }
       else
         format.json { render json: { errors: @vote.errors.full_messages }, status: :unprocessable_entity }
       end
@@ -30,7 +30,7 @@ module Voted
     respond_to do |format|
       if @vote.destroy!
         flash[:success] = t('votes.unvote.success')
-        format.json { render json: { vote: @vote, votes_sum: @votable.votes_sum } }
+        format.json { render json: { vote: @vote, votes_sum: @votable.votes_sum, vote_marker: voted_marker(@votable) } }
       else
         format.json { render json: { errors: @vote.errors.full_messages }, status: :unprocessable_entity }
       end
@@ -55,15 +55,7 @@ module Voted
     params.require(:vote).permit(:value)
   end
 
-  def vote_value
-    vote_positive? ? 1 : -1
-  end
-
   def vote_success_message
-    vote_positive? ? t('votes.for.success') : t('votes.against.success')
-  end
-
-  def vote_positive?
-    vote_params[:value].to_i >= 0
+    @vote.positive? ? t('votes.for.success') : t('votes.against.success')
   end
 end

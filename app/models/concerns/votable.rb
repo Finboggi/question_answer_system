@@ -6,7 +6,7 @@ module Votable
   end
 
   def user_vote(user)
-    self.votes.where( { user: user, votable: self } )
+    self.votes.where( { user: user, votable: self } ).first
   end
 
   def votes_sum
@@ -14,7 +14,7 @@ module Votable
   end
 
   def voted?(user)
-    user_vote(user).present? ? true : false
+    user_vote(user).present?
   end
 
   def not_voted?(user)
@@ -22,7 +22,7 @@ module Votable
   end
 
   def voted_for?(user)
-    voted? user && (user_vote(user).select(&:value).present?)
+    voted?(user) && user_vote(user).positive?
   end
 
   def voted_against?(user)
