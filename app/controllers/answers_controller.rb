@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
   before_action :find_question
   before_action :find_answer, only: [:destroy, :edit, :update, :accept]
 
+  include Voted
+
   def new
     @answer = @question.answers.new
   end
