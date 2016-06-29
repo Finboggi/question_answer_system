@@ -24,11 +24,11 @@ feature 'answers vote', %q(
 
       within '#answer_' + answer.id.to_s do
         expect_no_vote_links
-        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum+1)
+        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum + 1)
       end
     end
 
-    scenario 'authorized user votes against other user\'s question', js: true  do
+    scenario 'authorized user votes against other user\'s question', js: true do
       login_as(create(:user))
       visit question_path(question)
       votes_sum = nil
@@ -43,10 +43,9 @@ feature 'answers vote', %q(
 
       within '#answer_' + answer.id.to_s do
         expect_no_vote_links
-        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum-1)
+        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum - 1)
       end
     end
-
 
     scenario 'authorized user votes for or against his question' do
       login_as(answer.user)
@@ -67,9 +66,9 @@ feature 'answers vote', %q(
   end
 
   describe 'vote withdrawing' do
-    given (:question) { create(:question, :with_answers) }
+    given(:question) { create(:question, :with_answers) }
     given(:answer) { question.answers.first }
-    given(:vote) { create(:vote, {votable_id: answer.id, votable_type: answer.class.name}) }
+    given(:vote) { create(:vote, votable_id: answer.id, votable_type: answer.class.name) }
 
     scenario 'authorized user withdraws his vote', js: true do
       login_as(vote.user)

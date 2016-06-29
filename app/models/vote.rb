@@ -4,7 +4,8 @@ class Vote < ActiveRecord::Base
   before_save :normalize_value
 
   validates :user, uniqueness: { scope: :votable,
-                                    message: ' can vote only once per votable object' }
+                                 message: ' can vote only once per votable object'
+  }
   validate :not_from_votable_author
 
   def positive?

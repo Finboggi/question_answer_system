@@ -6,11 +6,11 @@ module Votable
   end
 
   def user_vote(user)
-    self.votes.where( { user: user, votable: self } ).first
+    votes.where(user: user, votable: self).first
   end
 
   def votes_sum
-    self.votes.sum(:value)
+    votes.sum :value
   end
 
   def voted?(user)

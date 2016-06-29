@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: [:show, :destroy, :edit, :update]
 
   include Voted
-  
+
   def new
     @question = Question.new
     @question.attachments.build
@@ -62,7 +62,11 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
+    params.require(:question).permit(
+      :title,
+      :body,
+      attachments_attributes: [:id, :file, :_destroy]
+    )
   end
 
   def find_question

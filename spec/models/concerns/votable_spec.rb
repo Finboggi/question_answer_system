@@ -11,6 +11,7 @@ describe 'votable', type: :model do
     end
   end
 
-# Doesn't work
-#   it { should have_many(:votes) }
+  # Doesn't work
+  # it { should have_many(:votes) }
+  # so this spec is just a dummy now
 end

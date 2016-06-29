@@ -4,11 +4,11 @@ module VotesHelper
   end
 
   def vote_url_json(votable)
-    polymorphic_url(path_array(votable, :vote), :format => :json)
+    polymorphic_url(path_array(votable, :vote), format: :json)
   end
 
   def unvote_url_json(votable)
-    polymorphic_url(path_array(votable, :unvote), :format => :json)
+    polymorphic_url(path_array(votable, :unvote), format: :json)
   end
 
   private

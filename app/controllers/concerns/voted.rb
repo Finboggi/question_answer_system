@@ -8,31 +8,27 @@ module Voted
   end
 
   def vote
-    @vote = @votable.votes.new( {
-        votable: @votable,
-        user_id: current_user.id,
-        value: vote_params[:value]
-                                } )
+    @vote = vote_new
 
     respond_to do |format|
       if @vote.save
         flash[:success] = vote_success_message
-        format.json { render json: { vote: @vote, votes_sum: @votable.votes_sum, vote_marker: voted_marker(@votable) } }
+        format.json { vote_render_success }
       else
-        format.json { render json: { errors: @vote.errors.full_messages }, status: :unprocessable_entity }
+        format.json { vote_render_error }
       end
     end
   end
 
   def unvote
-    @vote = @votable.votes.where(user: current_user).first
+    @vote = @votable.user_vote current_user
 
     respond_to do |format|
       if @vote.destroy!
         flash[:success] = t('votes.unvote.success')
-        format.json { render json: { vote: @vote, votes_sum: @votable.votes_sum, vote_marker: voted_marker(@votable) } }
+        format.json { vote_render_success }
       else
-        format.json { render json: { errors: @vote.errors.full_messages }, status: :unprocessable_entity }
+        format.json { vote_render_error }
       end
     end
   end
@@ -57,5 +53,30 @@ module Voted
 
   def vote_success_message
     @vote.positive? ? t('votes.for.success') : t('votes.against.success')
+  end
+
+  def vote_new_hash
+    {
+      votable: @votable,
+      user_id: current_user.id,
+      value: vote_params[:value]
+    }
+  end
+
+  def vote_new
+    @votable.votes.new vote_new_hash
+  end
+
+  def vote_render_error
+    render json: { errors: @vote.errors.full_messages },
+           status: :unprocessable_entity
+  end
+
+  def vote_render_success
+    render json: {
+      vote: @vote,
+      votes_sum: @votable.votes_sum,
+      vote_marker: voted_marker(@votable)
+    }
   end
 end

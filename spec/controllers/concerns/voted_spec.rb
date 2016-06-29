@@ -19,13 +19,13 @@ describe ApplicationController, type: :controller do
   describe 'POST#vote' do
     create_user_and_sign_in
     let(:another_user) { create(:user) }
-    let(:model_instance) { Anonymou.create( { user: another_user } ) }
+    let(:model_instance) { Anonymou.create(user: another_user) }
     let(:params) { { format: 'json', anonymou_id: model_instance.id, vote: { value: 1 } } }
-    before { routes.draw { post 'vote' => "anonymous#vote" } }
+    before { routes.draw { post 'vote' => 'anonymous#vote' } }
 
     it 'adds vote to database and assigns it to model instance' do
       expect { post :vote, params }
-          .to change(model_instance.votes, :count).by(1)
+        .to change(model_instance.votes, :count).by(1)
     end
 
     it 'changes votes sum by 1' do

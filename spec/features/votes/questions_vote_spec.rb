@@ -6,7 +6,7 @@ feature 'questions vote', %q(
   must be able to vote for or against question
   ) do
   describe 'User didn\'t voted yet' do
-    given (:question) { create(:question) }
+    given(:question) { create(:question) }
 
     scenario 'authorized user votes for other user\'s question', js: true do
       login_as(create(:user))
@@ -23,11 +23,11 @@ feature 'questions vote', %q(
 
       within '#question' do
         expect_no_vote_links
-        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum+1)
+        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum + 1)
       end
     end
 
-    scenario 'authorized user votes against other user\'s question', js: true  do
+    scenario 'authorized user votes against other user\'s question', js: true do
       login_as(create(:user))
       visit question_path(question)
       votes_sum = nil
@@ -42,10 +42,9 @@ feature 'questions vote', %q(
 
       within '#question' do
         expect_no_vote_links
-        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum-1)
+        expect(find('.votes_sum .numeric').text.to_i).to eq(votes_sum - 1)
       end
     end
-
 
     scenario 'authorized user votes for or against his question' do
       login_as(question.user)
@@ -66,7 +65,7 @@ feature 'questions vote', %q(
   end
 
   describe 'vote withdrawing' do
-    given (:question) { create(:question, :with_votes) }
+    given(:question) { create(:question, :with_votes) }
 
     scenario 'authorized user withdraws his vote', js: true do
       login_as(question.votes.first.user)
@@ -98,6 +97,4 @@ feature 'questions vote', %q(
       end
     end
   end
-
-
 end
