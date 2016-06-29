@@ -22,7 +22,7 @@ module Votable
   end
 
   def voted_for?(user)
-    voted? user && (user_vote(user).select(&:value).first.attributes['value'] >= 0)
+    voted? user && (user_vote(user).select(&:value).present?)
   end
 
   def voted_against?(user)

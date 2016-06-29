@@ -3,7 +3,7 @@ class Vote < ActiveRecord::Base
   belongs_to :user
 
   validates :user, uniqueness: { scope: :votable,
-                                    message: 'should be voted once per user' }
+                                    message: ' can vote only once per votable object' }
   validate :not_from_votable_author
 
   private

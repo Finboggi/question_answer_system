@@ -5,7 +5,7 @@
 
   .votes_actions
     - if current_user && !current_user.author_of?(votable)
-      - if votable.not_voted? current_user
+      div class="#{(votable.voted? current_user) ? 'display_none' : ''}"
         = link_to t('votes.for.link'), vote_url_json(votable),\
           data: { params: { vote: { value: 1 } } },\
           remote: true,\
@@ -14,7 +14,7 @@
           data: { params: { vote: { value: -1 } } },\
           remote: true,\
           method: :post
-      - else
+      div class="#{(votable.not_voted? current_user) ? 'display_none' : ''}"
         .marker = voted_marker votable
         = link_to t('votes.unvote.link'), unvote_url_json(votable), \
           remote: true, \
