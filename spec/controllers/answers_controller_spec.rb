@@ -206,4 +206,8 @@ RSpec.describe AnswersController, type: :controller do
       it_has_403_answer
     end
   end
+
+  describe 'includes Voted concern' do
+    it { expect(controller.class.included_modules.include? Voted).to eq(true) }
+  end
 end

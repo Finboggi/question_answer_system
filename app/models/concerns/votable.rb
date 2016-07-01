@@ -5,6 +5,18 @@ module Votable
     has_many :votes, as: :votable, dependent: :destroy
   end
 
+  def vote_for user
+    vote = votes.new({ user: user, value: 1 })
+    vote.save
+    vote
+  end
+
+  def vote_against user
+    vote = votes.new({ user: user, value: -1 })
+    vote.save
+    vote
+  end
+
   def user_vote(user)
     votes.where(user: user, votable: self).first
   end

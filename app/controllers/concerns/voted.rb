@@ -8,10 +8,12 @@ module Voted
   end
 
   def vote_for
+    @vote = @votable.vote_for current_user
     vote
   end
 
   def vote_against
+    @vote = @votable.vote_against current_user
     vote
   end
 
@@ -40,24 +42,8 @@ module Voted
     @votable = model_klass.find(params[param_id_name])
   end
 
-  def vote_params
-    params.require(:vote).permit(:value)
-  end
-
   def vote_success_message
     @vote.positive? ? t('votes.for.success') : t('votes.against.success')
-  end
-
-  def vote_new_hash
-    {
-      votable: @votable,
-      user_id: current_user.id,
-      value: action_name == 'vote_for' ? 1 : -1
-    }
-  end
-
-  def vote_new
-    @votable.votes.new vote_new_hash
   end
 
   def vote_render_error
@@ -74,8 +60,6 @@ module Voted
   end
 
   def vote
-    @vote = vote_new
-
     if @vote.save
       flash[:success] = vote_success_message
       vote_render_success
