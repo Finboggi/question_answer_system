@@ -177,7 +177,5 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'includes Voted concern' do
-    it { expect(controller.class.included_modules.include? Voted).to eq(true) }
-  end
+  it_includes_voted_concern
 end

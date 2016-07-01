@@ -3,8 +3,12 @@ module VotesHelper
     (votable.voted_for? current_user) ? t('votes.for.marker') : t('votes.against.marker')
   end
 
-  def vote_url_json(votable)
-    polymorphic_url(path_array(votable, :vote), format: :json)
+  def vote_for_url_json(votable)
+    polymorphic_url(path_array(votable, :vote_for), format: :json)
+  end
+
+  def vote_against_url_json(votable)
+    polymorphic_url(path_array(votable, :vote_against), format: :json)
   end
 
   def unvote_url_json(votable)

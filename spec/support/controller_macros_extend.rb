@@ -21,4 +21,10 @@ module ControllerMacrosExtend
 
     let(:accepted_answer) { question.answers.find(&:accepted) } if options[:accepted_answer]
   end
+
+  def it_includes_voted_concern
+    describe 'includes Voted concern' do
+      it { expect(described_class.included_modules.include? Voted).to eq(true) }
+    end
+  end
 end

@@ -38,6 +38,7 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.include ControllerMacrosInclude, type: :controller
   config.extend ControllerMacrosExtend, type: :controller
+  config.extend ModelMacrosExtend, type: :model
   config.include Warden::Test::Helpers
   Warden.test_mode!
 
