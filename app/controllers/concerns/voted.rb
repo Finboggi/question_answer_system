@@ -2,45 +2,38 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_votable, only: [:vote, :unvote]
+    before_action :find_votable, only: [:vote_for, :vote_against, :unvote]
 
     include VotesHelper
   end
 
-  def vote
-    @vote = vote_new
+  def vote_for
+    vote
+  end
 
-    respond_to do |format|
-      if @vote.save
-        flash[:success] = vote_success_message
-        format.json { vote_render_success }
-      else
-        format.json { vote_render_error }
-      end
-    end
+  def vote_against
+    vote
   end
 
   def unvote
     @vote = @votable.user_vote current_user
 
-    respond_to do |format|
-      if @vote.destroy!
-        flash[:success] = t('votes.unvote.success')
-        format.json { vote_render_success }
-      else
-        format.json { vote_render_error }
-      end
+    if @vote.destroy!
+      flash[:success] = t('votes.unvote.success')
+      vote_render_success
+    else
+      vote_render_error
     end
   end
 
   private
 
   def model_klass
-    controller_name.classify.constantize
+    controller_name.singularize.classify.constantize
   end
 
   def param_id_name
-    controller_name.classify.downcase + '_id'
+    controller_name.singularize.classify.downcase + '_id'
   end
 
   def find_votable
@@ -59,7 +52,7 @@ module Voted
     {
       votable: @votable,
       user_id: current_user.id,
-      value: vote_params[:value]
+      value: action_name == 'vote_for' ? 1 : -1
     }
   end
 
@@ -78,5 +71,16 @@ module Voted
       votes_sum: @votable.votes_sum,
       vote_marker: voted_marker(@votable)
     }
+  end
+
+  def vote
+    @vote = vote_new
+
+    if @vote.save
+      flash[:success] = vote_success_message
+      vote_render_success
+    else
+      vote_render_error
+    end
   end
 end

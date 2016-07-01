@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   concern :votable do
-    post :vote
+    post :vote_for
+    post :vote_against
     delete :unvote
   end
 
