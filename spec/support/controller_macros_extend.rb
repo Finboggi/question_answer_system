@@ -24,7 +24,7 @@ module ControllerMacrosExtend
 
   def it_includes_voted_concern
     describe 'includes Voted concern' do
-      it { expect(described_class.included_modules.include? Voted).to eq(true) }
+      it { expect(described_class.included_modules.include?(Voted)).to eq(true) }
     end
   end
 end
