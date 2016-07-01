@@ -1,6 +1,9 @@
 module VotesHelper
   def voted_marker(votable)
-    (votable.voted_for? current_user) ? t('votes.for.marker') : t('votes.against.marker')
+    if current_user.voted? votable
+      (current_user.voted_for? votable) ? t('votes.for.marker') : t('votes.against.marker')
+
+    end
   end
 
   def vote_for_url_json(votable)

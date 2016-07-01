@@ -18,7 +18,7 @@ module Voted
   end
 
   def unvote
-    @vote = @votable.user_vote current_user
+    @vote = current_user.vote @votable
 
     if @vote.destroy!
       flash[:success] = t('votes.unvote.success')

@@ -5,14 +5,14 @@
 
   .votes_actions
     - if current_user && !current_user.author_of?(votable)
-      div class="#{(votable.voted? current_user) ? 'display_none' : ''}"
+      div class="#{(current_user.voted? votable) ? 'display_none' : ''}"
         = link_to t('votes.for.link'), vote_for_url_json(votable),\
           remote: true,\
           method: :post
         = link_to t('votes.against.link'), vote_against_url_json(votable),\
           remote: true,\
           method: :post
-      div class="#{(votable.not_voted? current_user) ? 'display_none' : ''}"
+      div class="#{(current_user.not_voted? votable) ? 'display_none' : ''}"
         .marker = voted_marker votable
         = link_to t('votes.unvote.link'), unvote_url_json(votable), \
           remote: true, \

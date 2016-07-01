@@ -9,4 +9,24 @@ class User < ActiveRecord::Base
   def author_of?(resource)
     resource.user_id == id
   end
+
+  def vote(resource)
+    resource.votes.where(user: self).first
+  end
+
+  def voted?(resource)
+    vote(resource).present?
+  end
+
+  def not_voted?(resource)
+    !voted? resource
+  end
+
+  def voted_for?(resource)
+    vote(resource).positive?
+  end
+
+  def voted_against?(resource)
+    vote(resource).negative?
+  end
 end

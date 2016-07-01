@@ -71,4 +71,28 @@ describe ApplicationController, type: :controller do
       expect(flash[:alert]).to be_nil
     end
   end
+
+  describe 'DELETE#unvote' do
+    create_user_and_sign_in
+    let(:another_user) { create(:user) }
+    let(:model_instance) { Anonymou.create(user: another_user) }
+    let(:params) { { format: 'json', anonymou_id: model_instance.id} }
+    let!(:vote) { create(:vote, user: @user, votable: model_instance, value: -1)}
+    before { routes.draw { delete 'unvote' => 'anonymous#unvote' } }
+
+    it 'adds vote to database and assigns it to model instance' do
+      expect { delete :unvote, params }
+          .to change(model_instance.votes, :count).by(-1)
+    end
+
+    it 'changes votes sum by 1' do
+      votes_sum = model_instance.votes_sum
+      delete :unvote, params
+      expect(model_instance.votes_sum).to eq(votes_sum + 1)
+    end
+
+    it 'flashes no alerts' do
+      expect(flash[:alert]).to be_nil
+    end
+  end
 end
