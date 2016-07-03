@@ -83,3 +83,16 @@ en:
       link: 'Remove this file'
       success: 'File successfully removed'
       not_owner: 'You are not the owner of that file container'
+  votes:
+    for:
+      link: 'vote for'
+      marker: 'voted for'
+      success: 'You have voted for'
+    against:
+      link: 'vote against'
+      marker: 'voted against'
+      success: 'You have voted against'
+    unvote:
+      link: 'Revote!'
+      success: 'Now you can vote again'
+    sum: 'Total votes: '

@@ -4,10 +4,10 @@ class AttachmentsController < ApplicationController
 
   def destroy
     if current_user.author_of?(@attachment.attachable)
-      flash[:notice] = I18n.t('attachments.delete.success')
+      flash[:notice] = t('attachments.delete.success')
       @attachment.destroy!
     else
-      flash[:alert] = I18n.t('attachments.delete.not_owner')
+      flash[:alert] = t('attachments.delete.not_owner')
       render status: :forbidden
     end
   end

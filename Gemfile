@@ -53,6 +53,7 @@ group :test do
   gem 'shoulda-matchers', require: false
   gem 'capybara'
   gem 'launchy'
+  gem 'with_model'
 end
 
 group :development do

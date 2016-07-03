@@ -37,4 +37,6 @@ RSpec.describe Answer, type: :model do
       expect(Answer.all).to eq [answer_two, answer_one]
     end
   end
+
+  it_includes_votable_concern
 end

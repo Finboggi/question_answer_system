@@ -20,4 +20,9 @@ module AcceptanceMacros
     fill_in_login(user)
     fill_in 'Password confirmation', with: user.password
   end
+
+  def expect_no_vote_links
+    expect(page).to have_no_link I18n.t('votes.for.link')
+    expect(page).to have_no_link I18n.t('votes.against.link')
+  end
 end

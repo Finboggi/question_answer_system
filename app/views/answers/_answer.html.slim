@@ -11,3 +11,5 @@
     = link_to answer.accepted ? t('answers.reject.link') : t('answers.accept.link'),
               question_answer_accept_path(@question, answer),
               remote: true, method: :put, class: 'answer_accept_link'
+
+  = render 'votes/votes', votable: answer

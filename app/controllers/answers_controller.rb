@@ -3,28 +3,30 @@ class AnswersController < ApplicationController
   before_action :find_question
   before_action :find_answer, only: [:destroy, :edit, :update, :accept]
 
+  include Voted
+
   def new
     @answer = @question.answers.new
   end
 
   def create
     @answer = @question.answers.new(answer_params.merge(user: current_user))
-    flash[:success] = I18n.t('answers.new.success') if @answer.save
+    flash[:success] = t('answers.new.success') if @answer.save
   end
 
   def destroy
     if current_user.author_of?(@answer)
-      flash[:notice] = I18n.t('answers.delete.success')
+      flash[:notice] = t('answers.delete.success')
       @answer.destroy!
     else
-      flash[:alert] = I18n.t('answers.delete.not_owner')
+      flash[:alert] = t('answers.delete.not_owner')
       render status: :forbidden
     end
   end
 
   def edit
     unless current_user.author_of?(@answer)
-      flash[:alert] = I18n.t('answers.edit.not_owner')
+      flash[:alert] = t('answers.edit.not_owner')
       render status: :forbidden
     end
 
@@ -33,9 +35,9 @@ class AnswersController < ApplicationController
 
   def update
     if current_user.author_of?(@answer)
-      flash[:notice] = I18n.t('answers.update.success') if @answer.update_attributes answer_params
+      flash[:notice] = t('answers.update.success') if @answer.update_attributes answer_params
     else
-      flash[:alert] = I18n.t('answers.update.not_owner')
+      flash[:alert] = t('answers.update.not_owner')
       render status: :forbidden
     end
   end
@@ -44,9 +46,9 @@ class AnswersController < ApplicationController
     if current_user.author_of?(@question)
       @answer.change_acceptance.reload
       flash[:notice] =
-        @answer.accepted ? I18n.t('answers.accept.success') : I18n.t('answers.reject.success')
+        @answer.accepted ? t('answers.accept.success') : t('answers.reject.success')
     else
-      flash[:alert] = I18n.t('questions.update.not_owner')
+      flash[:alert] = t('questions.update.not_owner')
       render status: :forbidden
     end
   end

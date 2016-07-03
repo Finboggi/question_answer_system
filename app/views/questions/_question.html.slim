@@ -1,9 +1,13 @@
 h1 = @question.title
-.question_body = @question.body
+div id="question_#{@question.id}"
+  .question_body = @question.body
 
-= render 'attachments/attachments_list', container: @question
+  = render 'attachments/attachments_list', container: @question
 
-- if current_user && current_user.author_of?(@question)
-  = link_to t('questions.delete.link'), question_path(@question), method: :delete
-  = link_to t('questions.edit.link'), edit_question_path(@question), remote: true
-#edit_question
+  - if current_user && current_user.author_of?(@question)
+    = link_to t('questions.delete.link'), question_path(@question), method: :delete
+    = link_to t('questions.edit.link'), edit_question_path(@question), remote: true
+
+  = render 'votes/votes', votable: @question
+
+  #edit_question

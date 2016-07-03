@@ -14,6 +14,8 @@ class Answer < ActiveRecord::Base
                                 allow_destroy:  true,
                                 reject_if:      :all_blank
 
+  include Votable
+
   def change_acceptance
     Answer.transaction do
       unaccept_all_but_current! unless accepted

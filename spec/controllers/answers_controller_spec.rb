@@ -206,4 +206,6 @@ RSpec.describe AnswersController, type: :controller do
       it_has_403_answer
     end
   end
+
+  it_includes_voted_concern
 end

@@ -1,10 +1,17 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  concern :votable do
+    post :vote_for
+    post :vote_against
+    delete :unvote
+  end
+
   root to: 'questions#index'
 
-  resources :questions do
+  resources :questions, concerns: [:votable] do
     put 'answers/:id/accept', action: :accept, controller: :answers, as: 'answer_accept'
-    resources :answers
+    resources :answers, concerns: [:votable]
   end
 
   delete 'attachments/:id' => 'attachments#destroy', as: 'attachment'
